@@ -1,0 +1,7 @@
+F:\GradView\GradView\GradView.WebApp\bin\GradView.WebApp.dll
+F:\GradView\GradView\GradView.WebApp\bin\GradView.WebApp.pdb
+F:\GradView\GradView\GradView.WebApp\bin\GradView.Library.dll
+F:\GradView\GradView\GradView.WebApp\bin\GradView.Library.pdb
+F:\GradView\GradView\GradView.WebApp\obj\Debug\ResolveAssemblyReference.cache
+F:\GradView\GradView\GradView.WebApp\obj\Debug\GradView.WebApp.dll
+F:\GradView\GradView\GradView.WebApp\obj\Debug\GradView.WebApp.pdb
