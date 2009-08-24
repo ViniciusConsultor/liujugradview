@@ -1,0 +1,316 @@
+using System;
+using System.Collections;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Configuration;
+
+///========================================================================
+/// Project: 公共库
+/// Copyright: Copyright (c) 2009
+/// Company: 长沙东君信息科技有限公司DJKJ Tech LTD.,Changsha( 研制开发)	
+///========================================================================
+
+namespace GradView.Library.Utility
+{
+    ///<summary>
+    ///Title: SqlHelper类
+    ///Description: SQLServer数据库操作工具类
+    ///@author 万灵杰
+    ///@version 1.0.0.0
+    ///@date 2009年8月15日
+    ///@modify 
+    ///@date 
+    /// </summary>
+    public abstract class SqlHelper
+    {
+        private static int commandTimeout = 30;
+        public static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        private static Hashtable parmCache = Hashtable.Synchronized(new Hashtable());
+
+        protected SqlHelper()
+        {
+        }
+
+        public static void CacheParameters(string cacheKey, params SqlParameter[] commandParameters)
+        {
+            parmCache[cacheKey] = commandParameters;
+        }
+
+        public static DataSet ExecuteDataSet(string cmdText, params SqlParameter[] commandParameters)
+        {
+            return ExecuteDataSet(CommandType.Text, cmdText, commandParameters);
+        }
+
+        public static DataSet ExecuteDataSet(CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = CommandTimeout;
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet);
+                cmd.Parameters.Clear();
+                return dataSet;
+            }
+        }
+
+        public static int ExecuteNonQuery(string cmdText, params SqlParameter[] commandParameters)
+        {
+            return ExecuteNonQuery(CommandType.Text, cmdText, commandParameters);
+        }
+
+        public static int ExecuteNonQuery(CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlCommand cmd = new SqlCommand();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                cmd.CommandTimeout = commandTimeout;
+                PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
+                int num = cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+                return num;
+            }
+        }
+
+        public static int ExecuteNonQuery(SqlConnection connection, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = commandTimeout;
+            PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
+            int num = cmd.ExecuteNonQuery();
+            cmd.Parameters.Clear();
+            return num;
+        }
+
+        public static int ExecuteNonQuery(SqlTransaction trans, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = commandTimeout;
+            PrepareCommand(cmd, trans.Connection, trans, cmdType, cmdText, commandParameters);
+            int num = cmd.ExecuteNonQuery();
+            cmd.Parameters.Clear();
+            return num;
+        }
+
+        public static int ExecuteNonQuery(string connectionString, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlCommand cmd = new SqlCommand();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                cmd.CommandTimeout = commandTimeout;
+                PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
+                int num = cmd.ExecuteNonQuery();
+                cmd.Parameters.Clear();
+                return num;
+            }
+        }
+
+        public static SqlDataReader ExecuteReader(string cmdText, params SqlParameter[] commandParameters)
+        {
+            return ExecuteReader(CommandType.Text, cmdText, commandParameters);
+        }
+
+        public static SqlDataReader ExecuteReader(CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlDataReader reader2;
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = commandTimeout;
+            SqlConnection conn = new SqlConnection(ConnectionString);
+            try
+            {
+                PrepareCommand(cmd, conn, null, cmdType, cmdText, commandParameters);
+                SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                cmd.Parameters.Clear();
+                reader2 = reader;
+            }
+            catch (Exception exception)
+            {
+                conn.Close();
+                throw exception;
+            }
+            return reader2;
+        }
+
+        public static SqlDataReader ExecuteReader(SqlConnection conn, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlDataReader reader2;
+            SqlCommand cmd = new SqlCommand();
+            try
+            {
+                PrepareCommand(cmd, conn, null, cmdType, cmdText, commandParameters);
+                SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                cmd.Parameters.Clear();
+                reader2 = reader;
+            }
+            catch (Exception exception)
+            {
+                conn.Close();
+                throw exception;
+            }
+            return reader2;
+        }
+
+        public static SqlDataReader ExecuteReader(string connectionString, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlDataReader reader2;
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = commandTimeout;
+            SqlConnection conn = new SqlConnection(connectionString);
+            try
+            {
+                PrepareCommand(cmd, conn, null, cmdType, cmdText, commandParameters);
+                SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                cmd.Parameters.Clear();
+                reader2 = reader;
+            }
+            catch
+            {
+                conn.Close();
+                throw;
+            }
+            return reader2;
+        }
+
+        public static SqlDataReader ExecuteReaderWithoutClosingConnection(SqlConnection conn, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlDataReader reader2;
+            SqlCommand cmd = new SqlCommand();
+            try
+            {
+                PrepareCommand(cmd, conn, null, cmdType, cmdText, commandParameters);
+                SqlDataReader reader = cmd.ExecuteReader();
+                cmd.Parameters.Clear();
+                reader2 = reader;
+            }
+            catch (Exception exception)
+            {
+                conn.Close();
+                throw exception;
+            }
+            return reader2;
+        }
+
+        public static object ExecuteScalar(string cmdText, params SqlParameter[] commandParameters)
+        {
+            return ExecuteScalar(CommandType.Text, cmdText, commandParameters);
+        }
+
+        public static object ExecuteScalar(CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = commandTimeout;
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
+                object obj2 = cmd.ExecuteScalar();
+                cmd.Parameters.Clear();
+                return obj2;
+            }
+        }
+
+        public static object ExecuteScalar(SqlTransaction transaction, CommandType commandType, string commandText, params SqlParameter[] commandParameters)
+        {
+            if (transaction == null)
+            {
+                throw new ArgumentNullException("transaction");
+            }
+            if ((transaction != null) && (transaction.Connection == null))
+            {
+                throw new ArgumentException("The transaction was rollbacked\tor commited, please\tprovide\tan open\ttransaction.", "transaction");
+            }
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = commandTimeout;
+            PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters);
+            object obj2 = cmd.ExecuteScalar();
+            cmd.Parameters.Clear();
+            return obj2;
+        }
+
+        public static object ExecuteScalar(string connectionString, CommandType cmdType, string cmdText, params SqlParameter[] commandParameters)
+        {
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandTimeout = commandTimeout;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                PrepareCommand(cmd, connection, null, cmdType, cmdText, commandParameters);
+                object obj2 = cmd.ExecuteScalar();
+                cmd.Parameters.Clear();
+                return obj2;
+            }
+        }
+
+        public static SqlParameter[] GetCachedParameters(string cacheKey)
+        {
+            SqlParameter[] parameterArray = (SqlParameter[])parmCache[cacheKey];
+            if (parameterArray == null)
+            {
+                return null;
+            }
+            SqlParameter[] parameterArray2 = new SqlParameter[parameterArray.Length];
+            int index = 0;
+            int length = parameterArray.Length;
+            while (index < length)
+            {
+                parameterArray2[index] = (SqlParameter)((ICloneable)parameterArray[index]).Clone();
+                index++;
+            }
+            return parameterArray2;
+        }
+
+        public static DbConnection GetConnection()
+        {
+            return (DbConnection)new SqlConnection(ConnectionString);
+        }
+
+        private static void PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, CommandType cmdType, string cmdText, SqlParameter[] cmdParms)
+        {
+            if (conn.State != ConnectionState.Open)
+            {
+                conn.Open();
+            }
+            cmd.Connection = conn;
+            cmd.CommandText = cmdText;
+            if (trans != null)
+            {
+                cmd.Transaction = trans;
+            }
+            cmd.CommandType = cmdType;
+            if (cmdParms != null)
+            {
+                foreach (SqlParameter parameter in cmdParms)
+                {
+                    cmd.Parameters.Add(parameter);
+                }
+            }
+        }
+
+        public static string SqlBit(bool value)
+        {
+            if (value)
+            {
+                return "Y";
+            }
+            return "N";
+        }
+
+        public static bool SqlBool(string value)
+        {
+            return value.Equals("Y");
+        }
+
+        public static int CommandTimeout
+        {
+            get
+            {
+                return commandTimeout;
+            }
+            set
+            {
+                commandTimeout = value;
+            }
+        }
+    }
+}
