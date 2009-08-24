@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Configuration;
 using System.Data;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Security;
@@ -11,13 +10,10 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Xml.Linq;
 
-namespace GradView.WebApp
+namespace GradView.WebApp.App_Code
 {
-    public partial class _Default : System.Web.UI.Page
+    public class SQL2005Help
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            
-        }
+        
     }
 }
