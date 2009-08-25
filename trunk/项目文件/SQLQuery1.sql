@@ -4,7 +4,7 @@
  * Project :      Model1.DM1
  * Author :       LiuJu150
  *
- * Date Created : Monday, August 24, 2009 15:57:10
+ * Date Created : Tuesday, August 25, 2009 17:06:55
  * Target DBMS : Microsoft SQL Server 2005
  */
 
@@ -200,7 +200,7 @@ if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', '
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'key_grade', 'column', 'keyID'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '年级类型编号', 'schema', 'dbo', 'table', 'key_grade', 'column', 'keyID'
+exec sys.sp_addextendedproperty 'MS_Description', '学历字典表', 'schema', 'dbo', 'table', 'key_grade', 'column', 'keyID'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'key_grade', 'column', 'keyName'))
 BEGIN
@@ -225,64 +225,6 @@ BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'key_grade', 'column', 'sort'
 END
 exec sys.sp_addextendedproperty 'MS_Description', '排序', 'schema', 'dbo', 'table', 'key_grade', 'column', 'sort'
-go
-/* 
- * TABLE: key_key 
- */
-
-CREATE TABLE key_key(
-    keyID      varchar(40)     NOT NULL,
-    keyName    varchar(100)    NULL,
-    keyCode    varchar(100)    NULL,
-    keyInfo    varchar(200)    NULL,
-    sort       int             NULL,
-    CONSTRAINT PK115_1_1 PRIMARY KEY NONCLUSTERED (keyID)
-)
-go
-
-
-
-IF OBJECT_ID('key_key') IS NOT NULL
-    PRINT '<<< CREATED TABLE key_key >>>'
-ELSE
-    PRINT '<<< FAILED CREATING TABLE key_key >>>'
-go
-
-if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'key_key', default, default))
-BEGIN
-    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'key_key'
-END
-exec sys.sp_addextendedproperty 'MS_Description', '字典管理表', 'schema', 'dbo', 'table', 'key_key'
-go
-if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyID'))
-BEGIN
-    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyID'
-END
-exec sys.sp_addextendedproperty 'MS_Description', '字典类型编号', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyID'
-go
-if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyName'))
-BEGIN
-    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyName'
-END
-exec sys.sp_addextendedproperty 'MS_Description', '名称', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyName'
-go
-if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyCode'))
-BEGIN
-    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyCode'
-END
-exec sys.sp_addextendedproperty 'MS_Description', '简称', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyCode'
-go
-if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyInfo'))
-BEGIN
-    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyInfo'
-END
-exec sys.sp_addextendedproperty 'MS_Description', '信息', 'schema', 'dbo', 'table', 'key_key', 'column', 'keyInfo'
-go
-if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'sort'))
-BEGIN
-    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'key_key', 'column', 'sort'
-END
-exec sys.sp_addextendedproperty 'MS_Description', '排序', 'schema', 'dbo', 'table', 'key_key', 'column', 'sort'
 go
 /* 
  * TABLE: key_regexType 
@@ -419,15 +361,16 @@ CREATE TABLE sys_FieldConfig(
     FKTableName      varchar(30)     NULL,
     FKTablePK        varchar(30)     NULL,
     FKTableField     varchar(30)     NULL,
-    ipxh             int             IDENTITY(1,1),
     regexTypeID      varchar(10)     NOT NULL,
     editTypeID       varchar(10)     NULL,
     regrxText        varchar(100)    NULL,
-    keyTableID       varchar(10)     NOT NULL,
+    keyTableID       varchar(40)     NOT NULL,
     isEdit           varchar(2)      NULL,
     EditSort         int             NULL,
     EditMinLength    int             NULL,
     EditMaxLength    int             NULL,
+    isMust           varchar(10)     NULL,
+    ipxh             int             IDENTITY(1,1),
     CONSTRAINT PK179 PRIMARY KEY NONCLUSTERED (xsid)
 )
 go
@@ -450,19 +393,19 @@ if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', '
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'xsid'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '显示编号', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'xsid'
+exec sys.sp_addextendedproperty 'MS_Description', '显示编号(主键GUID)', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'xsid'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'tableid'))
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'tableid'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '表编号', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'tableid'
+exec sys.sp_addextendedproperty 'MS_Description', '表编号(sys_TableCOnfig中的编号)', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'tableid'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'fieleName'))
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'fieleName'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '字段英文名', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'fieleName'
+exec sys.sp_addextendedproperty 'MS_Description', '字段英文名(在表中的字段英文)', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'fieleName'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'fieldNameCh'))
 BEGIN
@@ -474,13 +417,13 @@ if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', '
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ShowMaxLength'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '字段最大显示长度', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ShowMaxLength'
+exec sys.sp_addextendedproperty 'MS_Description', '字段最大显示长度(在显示控件中显示长度)', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ShowMaxLength'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ShowSort'))
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ShowSort'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '字段排序', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ShowSort'
+exec sys.sp_addextendedproperty 'MS_Description', '在显示控件中字段排序顺序', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ShowSort'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isPK'))
 BEGIN
@@ -492,13 +435,13 @@ if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', '
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isShow'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '是否显示', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isShow'
+exec sys.sp_addextendedproperty 'MS_Description', '在显示控件中是否显示', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isShow'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isSelect'))
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isSelect'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '是否查找', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isSelect'
+exec sys.sp_addextendedproperty 'MS_Description', '在显示控件中是否查找', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isSelect'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isIntType'))
 BEGIN
@@ -530,17 +473,17 @@ BEGIN
 END
 exec sys.sp_addextendedproperty 'MS_Description', '链接外键表的字段', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'FKTableField'
 go
-if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ipxh'))
-BEGIN
-    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ipxh'
-END
-exec sys.sp_addextendedproperty 'MS_Description', '排序号', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ipxh'
-go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'regexTypeID'))
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'regexTypeID'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '验证类型编号', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'regexTypeID'
+exec sys.sp_addextendedproperty 'MS_Description', '验证类型编号(验证字典表中的值)', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'regexTypeID'
+go
+if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'editTypeID'))
+BEGIN
+    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'editTypeID'
+END
+exec sys.sp_addextendedproperty 'MS_Description', '编辑类型(编辑类型字典表中的值)', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'editTypeID'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'regrxText'))
 BEGIN
@@ -552,31 +495,101 @@ if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', '
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'keyTableID'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '字典表编号', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'keyTableID'
+exec sys.sp_addextendedproperty 'MS_Description', '字典表编号(连接字典管理表,外键)', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'keyTableID'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isEdit'))
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isEdit'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '是否编辑', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isEdit'
+exec sys.sp_addextendedproperty 'MS_Description', '在编辑控件中是否编辑', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isEdit'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditSort'))
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditSort'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '排序顺序', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditSort'
+exec sys.sp_addextendedproperty 'MS_Description', '在编辑控件中排序顺序', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditSort'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditMinLength'))
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditMinLength'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '是小长度', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditMinLength'
+exec sys.sp_addextendedproperty 'MS_Description', '编辑最小长度', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditMinLength'
 go
 if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditMaxLength'))
 BEGIN
     exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditMaxLength'
 END
-exec sys.sp_addextendedproperty 'MS_Description', '最大长度', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditMaxLength'
+exec sys.sp_addextendedproperty 'MS_Description', '编辑最大长度', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'EditMaxLength'
+go
+if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isMust'))
+BEGIN
+    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isMust'
+END
+exec sys.sp_addextendedproperty 'MS_Description', '是否必要字段(在编辑控件的时候一定要输入)', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'isMust'
+go
+if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ipxh'))
+BEGIN
+    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ipxh'
+END
+exec sys.sp_addextendedproperty 'MS_Description', '排序号(自动)', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', 'ipxh'
+go
+/* 
+ * TABLE: sys_keys 
+ */
+
+CREATE TABLE sys_keys(
+    keyTableID        varchar(40)     NOT NULL,
+    keyTableName      varchar(30)     NULL,
+    keyTableNameCh    varchar(30)     NULL,
+    keyTableSelect    varchar(200)    NULL,
+    sort              int             NULL,
+    CONSTRAINT PK117 PRIMARY KEY NONCLUSTERED (keyTableID)
+)
+go
+
+
+
+IF OBJECT_ID('sys_keys') IS NOT NULL
+    PRINT '<<< CREATED TABLE sys_keys >>>'
+ELSE
+    PRINT '<<< FAILED CREATING TABLE sys_keys >>>'
+go
+
+if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_keys', default, default))
+BEGIN
+    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_keys'
+END
+exec sys.sp_addextendedproperty 'MS_Description', '字典管理表', 'schema', 'dbo', 'table', 'sys_keys'
+go
+if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableID'))
+BEGIN
+    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableID'
+END
+exec sys.sp_addextendedproperty 'MS_Description', '字典表编号', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableID'
+go
+if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableName'))
+BEGIN
+    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableName'
+END
+exec sys.sp_addextendedproperty 'MS_Description', '字典表名', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableName'
+go
+if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableNameCh'))
+BEGIN
+    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableNameCh'
+END
+exec sys.sp_addextendedproperty 'MS_Description', '字典表中文名', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableNameCh'
+go
+if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableSelect'))
+BEGIN
+    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableSelect'
+END
+exec sys.sp_addextendedproperty 'MS_Description', '字典表查询', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'keyTableSelect'
+go
+if exists (select * from ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'sort'))
+BEGIN
+    exec sys.sp_dropextendedproperty 'MS_Description', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'sort'
+END
+exec sys.sp_addextendedproperty 'MS_Description', '排序', 'schema', 'dbo', 'table', 'sys_keys', 'column', 'sort'
 go
 /* 
  * TABLE: sys_TableConfig 
@@ -813,6 +826,11 @@ go
 ALTER TABLE sys_FieldConfig ADD CONSTRAINT Refsys_TableConfig1 
     FOREIGN KEY (tableid)
     REFERENCES sys_TableConfig(tableid)
+go
+
+ALTER TABLE sys_FieldConfig ADD CONSTRAINT Refsys_keys8 
+    FOREIGN KEY (keyTableID)
+    REFERENCES sys_keys(keyTableID)
 go
 
 

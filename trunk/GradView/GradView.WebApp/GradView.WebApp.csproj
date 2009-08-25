@@ -70,6 +70,7 @@
   <ItemGroup>
     <Content Include="App_Code\SQL2005Help.cs" />
     <Content Include="insertCS\insertUsers.aspx" />
+    <Content Include="insertCS\sys_FieldConfig.aspx" />
     <Compile Include="Controls\EditGradView.ascx.cs">
       <DependentUpon>EditGradView.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -97,6 +98,13 @@
     </Compile>
     <Compile Include="insertCS\insertUsers.aspx.designer.cs">
       <DependentUpon>insertUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="insertCS\sys_FieldConfig.aspx.cs">
+      <DependentUpon>sys_FieldConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="insertCS\sys_FieldConfig.aspx.designer.cs">
+      <DependentUpon>sys_FieldConfig.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
