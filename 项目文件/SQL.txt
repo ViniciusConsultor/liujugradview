@@ -1,0 +1,33 @@
+SELECT gradeInfo.gradeName, classInfo.className, users.cyid, users.cymc
+FROM ((classInfo INNER JOIN
+      users ON classInfo.ID = users.classID) INNER JOIN
+      gradeInfo ON users.gradeID = gradeInfo.ID)
+
+
+SELECT users.cyid, users.cymc, gradeInfo.gradeName, classInfo.className
+FROM ((users INNER JOIN
+      classInfo ON classInfo.ID = users.classID) INNER JOIN
+      gradeInfo ON users.gradeID = gradeInfo.ID)
+
+
+SELECT top 20 users.cyid, users.cymc, gradeInfo.gradeName, classInfo.className
+FROM ((users INNER JOIN
+      classInfo ON classInfo.ID = users.classID) INNER JOIN
+      gradeInfo ON users.gradeID = gradeInfo.ID)
+where users.cyid not in(select top 10 users.cyid from users)
+
+SELECT TOP 20 users.cyid, users.cymc, gradeInfo.gradeName, classInfo.className
+FROM ((users INNER JOIN
+      classInfo ON classInfo.ID = users.classID) INNER JOIN
+      gradeInfo ON users.gradeID = gradeInfo.ID)
+WHERE (users.cyid NOT IN
+          (SELECT TOP 10 cyid
+         FROM users users_1)) AND (1 = 1)
+
+
+SELECT COUNT(users.cyid)
+FROM ((users INNER JOIN
+      classInfo ON classInfo.ID = users.classID) INNER JOIN
+      gradeInfo ON users.gradeID = gradeInfo.ID) 
+
+
