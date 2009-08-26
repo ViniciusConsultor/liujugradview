@@ -41,6 +41,12 @@
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -58,7 +64,6 @@
   <ItemGroup>
     <Content Include="Controls\EditGradView.ascx" />
     <Content Include="Controls\ShowGradView.ascx" />
-    <Content Include="Default.aspx" />
     <Content Include="JavaScript\ajaxupload.js" />
     <Content Include="JavaScript\jquery.js" />
     <Content Include="JavaScript\tablesorter.js" />
@@ -68,9 +73,22 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\SQL2005Help.cs" />
     <Content Include="insertCS\insertUsers.aspx" />
     <Content Include="insertCS\sys_FieldConfig.aspx" />
+    <Compile Include="AjaxPages\AjaxAccess.ashx.cs">
+      <DependentUpon>AjaxAccess.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="AjaxPages\AjaxMsSql.ashx.cs">
+      <DependentUpon>AjaxMsSql.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="AjaxPages\AjaxMySql.ashx.cs">
+      <DependentUpon>AjaxMySql.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="AjaxPages\AjaxOracle.ashx.cs">
+      <DependentUpon>AjaxOracle.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Code\JsonHelper.cs" />
+    <Compile Include="App_Code\JsonTableHelper.cs" />
     <Compile Include="Controls\EditGradView.ascx.cs">
       <DependentUpon>EditGradView.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -85,12 +103,12 @@
     <Compile Include="Controls\ShowGradView.ascx.designer.cs">
       <DependentUpon>ShowGradView.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Default.aspx.cs">
+    <Compile Include="EditPage.aspx.cs">
+      <DependentUpon>EditPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="EditPage.aspx.designer.cs">
+      <DependentUpon>EditPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="insertCS\insertUsers.aspx.cs">
       <DependentUpon>insertUsers.aspx</DependentUpon>
@@ -107,6 +125,13 @@
       <DependentUpon>sys_FieldConfig.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShowPage.aspx.cs">
+      <DependentUpon>ShowPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShowPage.aspx.designer.cs">
+      <DependentUpon>ShowPage.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GradView.Library\GradView.Library.csproj">
@@ -115,7 +140,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AjaxPages\" />
+    <Content Include="AjaxPages\AjaxMySql.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AjaxPages\AjaxMsSql.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AjaxPages\AjaxAccess.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AjaxPages\AjaxOracle.ashx" />
+    <Content Include="EditPage.aspx" />
+    <Content Include="ShowPage.aspx" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Images\" />
     <Folder Include="UpLoad\" />
