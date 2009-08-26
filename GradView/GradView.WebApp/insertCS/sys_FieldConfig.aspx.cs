@@ -19,7 +19,8 @@ namespace GradView.WebApp.insertCS
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Request.QueryString["tableID"] != null)
-            { 
+            {
+                txtTableID.Text = Request.QueryString["tableID"].ToString();
             }
         }
 
@@ -30,8 +31,8 @@ namespace GradView.WebApp.insertCS
             sfc.Tableid = txtTableID.Text;
             sfc.Fielename = txtFieldName.Text;
             sfc.Fieldnamech = txtFieldNameCh.Text;
-            sfc.Showmaxlength = txtShowMaxLength.Text;
-            sfc.Showsort = txtShowSort.Text;
+            sfc.Showmaxlength = Convert.ToInt32(txtShowMaxLength.Text);
+            sfc.Showsort = Convert.ToInt32(txtShowSort.Text);
             sfc.Ispk = rblIsPK.SelectedValue;
             sfc.Isshow = rblIsShow.SelectedValue;
             sfc.Isselect = rblIsSelect.SelectedValue;
@@ -45,11 +46,27 @@ namespace GradView.WebApp.insertCS
             sfc.Regrxtext = txtRegexText.Text;
             sfc.Keytableid = ddlKeyTableID.SelectedValue;
             sfc.Isedit = rblIsEdit.SelectedValue;
-            sfc.Editsort = txtEditSort.Text;
-            sfc.Editmaxlength = txtEditMaxLength.Text;
-            sfc.Editminlength = txtEditMinLength.Text;
+            sfc.Editsort = Convert.ToInt32(txtEditSort.Text);
+            sfc.Editmaxlength = Convert.ToInt32(txtEditMaxLength.Text);
+            sfc.Editminlength = Convert.ToInt32(txtEditMinLength.Text);
             sfc.Ismust = rblIsMust.SelectedValue;
             BizSysFieldconfig.Insert(sfc);
+            ClertTxtVal();
+        }
+
+        private void ClertTxtVal()
+        {
+            txtEditMaxLength.Text = "";
+            txtEditMinLength.Text = "";
+            txtEditSort.Text = "";
+            txtFieldName.Text = "";
+            txtFieldNameCh.Text = "";
+            txtFKTableField.Text = "";
+            txtFKTableName.Text = "";
+            txtFKTablePK.Text = "";
+            txtRegexText.Text = "";
+            txtShowMaxLength.Text = "";
+            txtShowSort.Text = "";
         }
     }
 }

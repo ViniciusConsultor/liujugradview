@@ -177,12 +177,12 @@
                     验证类型:</td>
                 <td class="TableTrTwoTd">
                     <asp:DropDownList ID="ddlRegexType" runat="server" 
-                        DataSourceID="SqlDataSourceRegExType" DataTextField="keyName" 
-                        DataValueField="keyCode" CssClass="selectCss">
+                        DataSourceID="SqlDataSourceRegExType" DataTextField="keyInfo" 
+                        DataValueField="keyName" CssClass="selectCss">
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSourceRegExType" runat="server" 
                         ConnectionString="<%$ ConnectionStrings:GradViewConnectionString %>" 
-                        SelectCommand="SELECT [keyName], [keyCode] FROM [key_regexType]">
+                        SelectCommand="SELECT [keyName], [keyInfo] FROM [key_regexType]">
                     </asp:SqlDataSource>
                 </td>
                 <td>
@@ -294,6 +294,63 @@
             </tr>
         </table>
         
+    </div>
+    <div>
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
+            DataKeyNames="xsid" DataSourceID="SqlDataSourceFieldConfig">
+            <Columns>
+                <asp:BoundField DataField="xsid" HeaderText="学生编号" ReadOnly="True" 
+                    SortExpression="xsid" />
+                <asp:BoundField DataField="tableid" HeaderText="表编号" SortExpression="tableid" />
+                <asp:BoundField DataField="fieleName" HeaderText="字段英文" 
+                    SortExpression="fieleName" />
+                <asp:BoundField DataField="fieldNameCh" HeaderText="字段中文" 
+                    SortExpression="fieldNameCh" />
+                <asp:BoundField DataField="ShowMaxLength" HeaderText="最大显示" 
+                    SortExpression="ShowMaxLength" />
+                <asp:BoundField DataField="ShowSort" HeaderText="显示排序" 
+                    SortExpression="ShowSort" />
+                <asp:BoundField DataField="isPK" HeaderText="主键" SortExpression="isPK" />
+                <asp:BoundField DataField="isShow" HeaderText="显示" SortExpression="isShow" />
+                <asp:BoundField DataField="isSelect" HeaderText="查询" 
+                    SortExpression="isSelect" />
+                <asp:BoundField DataField="isIntType" HeaderText="自增" 
+                    SortExpression="isIntType" />
+                <asp:BoundField DataField="isFK" HeaderText="外键" SortExpression="isFK" />
+                <asp:BoundField DataField="FKTableName" HeaderText="外键表" 
+                    SortExpression="FKTableName" />
+                <asp:BoundField DataField="FKTablePK" HeaderText="外表主键" 
+                    SortExpression="FKTablePK" />
+                <asp:BoundField DataField="FKTableField" HeaderText="外表字段" 
+                    SortExpression="FKTableField" />
+                <asp:BoundField DataField="regexTypeID" HeaderText="验证" 
+                    SortExpression="regexTypeID" />
+                <asp:BoundField DataField="editTypeID" HeaderText="编辑" 
+                    SortExpression="editTypeID" />
+                <asp:BoundField DataField="regrxText" HeaderText="描述" 
+                    SortExpression="regrxText" />
+                <asp:BoundField DataField="keyTableID" HeaderText="字典" 
+                    SortExpression="keyTableID" />
+                <asp:BoundField DataField="isEdit" HeaderText="编辑" SortExpression="isEdit" />
+                <asp:BoundField DataField="EditSort" HeaderText="编辑排序" 
+                    SortExpression="EditSort" />
+                <asp:BoundField DataField="EditMinLength" HeaderText="编辑小长度" 
+                    SortExpression="EditMinLength" />
+                <asp:BoundField DataField="EditMaxLength" HeaderText="编辑大长度" 
+                    SortExpression="EditMaxLength" />
+                <asp:BoundField DataField="isMust" HeaderText="必需" SortExpression="isMust" />
+                <asp:BoundField DataField="ipxh" HeaderText="排序号" InsertVisible="False" 
+                    ReadOnly="True" SortExpression="ipxh" />
+            </Columns>
+        </asp:GridView>
+        <asp:SqlDataSource ID="SqlDataSourceFieldConfig" runat="server" 
+            ConnectionString="<%$ ConnectionStrings:GradViewConnectionString %>" 
+            SelectCommand="SELECT * FROM [sys_FieldConfig] WHERE ([tableid] = @tableid)">
+            <SelectParameters>
+                <asp:QueryStringParameter DefaultValue="9014b630-de80-42c8-b21b-ee8e8518ef22" 
+                    Name="tableid" QueryStringField="tableID" Type="String" />
+            </SelectParameters>
+        </asp:SqlDataSource>
     </div>
 </form>
 </body>

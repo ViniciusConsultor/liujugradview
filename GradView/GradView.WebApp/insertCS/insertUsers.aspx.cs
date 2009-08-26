@@ -133,7 +133,7 @@ namespace GradView.WebApp.insertCS
             stc.Tablestyle = "style1.css";
             BizSysTableconfig.Insert(stc);
 
-            LABMsg.Text = "插入sys_TableConfig_UserInfo成功";
+            Response.Redirect("sys_FieldConfig.aspx?tableID=" + stc.Tableid);
         }
 
         protected void btnInsertEditType_Click(object sender, EventArgs e)
