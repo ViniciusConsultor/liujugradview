@@ -31,3 +31,12 @@ FROM ((users INNER JOIN
       gradeInfo ON users.gradeID = gradeInfo.ID) 
 
 
+
+
+
+SELECT     fieleName, fieldNameCh, ShowMaxLength, isPK, isShow, isSelect, isIntType, isFK, FKTableName, FKTablePK, FKTableField, keyTableID
+FROM         sys_FieldConfig
+WHERE     (tableid = '9014b630-de80-42c8-b21b-ee8e8518ef22')
+ORDER BY ShowSort
+
+SELECT fieleName,fieldNameCh,ShowMaxLength,isPK,isShow,isSelect,isIntType,isFK, FKTableName,FKTablePK,FKTableField,keyTableID FROM sys_FieldConfig WHERE (tableid='9014b630-de80-42c8-b21b-ee8e8518ef22') ORDER BY ShowSort

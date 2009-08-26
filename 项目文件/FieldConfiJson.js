@@ -1,0 +1,16 @@
+{
+"0":{"fieleName":"xsid","fieldNameCh":"学生编号","ShowMaxLength":"40","isPK":"1","isShow":"0","isSelect":"0","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"1":{"fieleName":"njid","fieldNameCh":"年级","ShowMaxLength":"6","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"1","FKTableName":"GradeInfo","FKTablePK":"njid","FKTableField":"njmc","keyTableID":""},
+"2":{"fieleName":"bjid","fieldNameCh":"班级","ShowMaxLength":"6","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"1","FKTableName":"ClassInfo","FKTablePK":"bjid","FKTableField":"bjmc","keyTableID":""},
+"3":{"fieleName":"xh","fieldNameCh":"学号","ShowMaxLength":"9","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"4":{"fieleName":"mm","fieldNameCh":"密码","ShowMaxLength":"0","isPK":"0","isShow":"0","isSelect":"0","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"5":{"fieleName":"sfz","fieldNameCh":"身份证","ShowMaxLength":"18","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"6":{"fieleName":"csrq","fieldNameCh":"出身日期","ShowMaxLength":"10","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"7":{"fieleName":"dh","fieldNameCh":"电话","ShowMaxLength":"11","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"8":{"fieleName":"qq","fieldNameCh":"QQ号码","ShowMaxLength":"9","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"9":{"fieleName":"yx","fieldNameCh":"邮箱","ShowMaxLength":"10","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"10":{"fieleName":"dz","fieldNameCh":"地址","ShowMaxLength":"10","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"11":{"fieleName":"zp","fieldNameCh":"照片","ShowMaxLength":"10","isPK":"0","isShow":"0","isSelect":"0","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"12":{"fieleName":"xb","fieldNameCh":"性别","ShowMaxLength":"2","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"36cfb0d1-449a-444c-bc21-5d9c9dbe56f4"},
+"13":{"fieleName":"xl","fieldNameCh":"学历","ShowMaxLength":"4","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"2142d3da-be3a-43bf-bdce-3fb6abe5f9ad"}
+}

@@ -181,7 +181,7 @@
                         DataValueField="keyName" CssClass="selectCss">
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSourceRegExType" runat="server" 
-                        ConnectionString="<%$ ConnectionStrings:GradViewConnectionString %>" 
+                        ConnectionString="<%$ ConnectionStrings:ConnectionString %>" 
                         SelectCommand="SELECT [keyName], [keyInfo] FROM [key_regexType]">
                     </asp:SqlDataSource>
                 </td>
@@ -197,7 +197,7 @@
                         DataValueField="keyCode" CssClass="selectCss">
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSourceEditType" runat="server" 
-                        ConnectionString="<%$ ConnectionStrings:GradViewConnectionString %>" 
+                        ConnectionString="<%$ ConnectionStrings:ConnectionString %>" 
                         SelectCommand="SELECT [keyName], [keyCode] FROM [key_editType]">
                     </asp:SqlDataSource>
                 </td>
@@ -222,7 +222,7 @@
                         DataValueField="keyTableID" CssClass="selectCss">
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SqlDataSourceSysKey" runat="server" 
-                        ConnectionString="<%$ ConnectionStrings:GradViewConnectionString %>" 
+                        ConnectionString="<%$ ConnectionStrings:ConnectionString %>" 
                         SelectCommand="SELECT [keyTableID], [keyTableNameCh] FROM [sys_keys]">
                     </asp:SqlDataSource>
                 </td>
@@ -344,7 +344,7 @@
             </Columns>
         </asp:GridView>
         <asp:SqlDataSource ID="SqlDataSourceFieldConfig" runat="server" 
-            ConnectionString="<%$ ConnectionStrings:GradViewConnectionString %>" 
+            ConnectionString="<%$ ConnectionStrings:ConnectionString %>" 
             SelectCommand="SELECT * FROM [sys_FieldConfig] WHERE ([tableid] = @tableid)">
             <SelectParameters>
                 <asp:QueryStringParameter DefaultValue="9014b630-de80-42c8-b21b-ee8e8518ef22" 
