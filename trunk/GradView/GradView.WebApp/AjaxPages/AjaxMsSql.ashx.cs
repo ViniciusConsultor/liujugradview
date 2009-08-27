@@ -42,7 +42,7 @@ namespace GradView.WebApp.AjaxPages
         private void Send_sysFieldConfig(HttpContext context)
         {
             string tableID = context.Request.Form["tableID"].ToString();
-            string sqlStr = "SELECT fieleName,fieldNameCh,ShowMaxLength,isPK,isShow,isSelect,isIntType,isFK, FKTableName,FKTablePK,FKTableField,keyTableID FROM sys_FieldConfig WHERE (tableid=@tableid) ORDER BY ShowSort";
+            string sqlStr = "SELECT fieldName,fieldNameCh,ShowMaxLength,isPK,isShow,isSelect,isIntType,isFK, FKTableName,FKTablePK,FKTableField,keyTableID FROM sys_FieldConfig WHERE (tableid=@tableid) ORDER BY ShowSort";
             SqlParameter[] sp = { 
                                     new SqlParameter("@tableid", SqlDbType.VarChar, 40)
                                 };
