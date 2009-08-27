@@ -39,7 +39,7 @@ var _GVP_PageNum=1;
 //总共同有多少页
 var _GVP_AllPageNum=1;
 //每页显示的记录数
-var _GVP_ShowPageNum=10;
+var _GVP_ShowPageNum=4;
 
 
 //页面开始要运行的
@@ -234,6 +234,9 @@ function _Fun_DownAllPageNum()
         }
         //跳到第几页
         $("#S_show_page_goToPage_select").html(selectHtml);
+        
+        //动态数字分页
+        _Fun_AutoNumPage();
     });
 }
 
@@ -256,6 +259,9 @@ function _Fun_DownPageJsonInfo()
                 _Fun_BindPageTable();
             }
         });
+        
+        //动态数字分页
+        _Fun_AutoNumPage();
     }else
     {
         $.ajax({
@@ -504,6 +510,37 @@ function _Fun_S_show_page_goToPage_select_change()
 {
     var pageNumber=$("#S_show_page_goToPage_select").val();
     _Fun_GoToPageNum(pageNumber);
+}
+//动态数字分页
+function _Fun_AutoNumPage()
+{
+    //当前为第几页
+    var A_pageNum=_GVP_PageNum;
+    //总共有多少页
+    var A_allPageNum=_GVP_AllPageNum;
+    //页码的开始(如果当前页-3比1小的话,开始页就是第一页,否则就是-3页)
+    var A_pageStart=A_pageNum-3<1?1:A_pageNum-3;
+    //页码的结束(如果当前页+3比总共页大的话,结束页就是总共页,否则就是+3页)
+    var A_pageEnd=parseInt(A_pageNum)+parseInt(3)>A_allPageNum?A_allPageNum:parseInt(A_pageNum)+parseInt(3);
+    var A_htmlStr="";
+    if(A_pageStart>1)
+    {
+        A_htmlStr+="<span>...</span>";
+    }
+    for(var i=A_pageStart;i<=A_pageEnd;i++)
+    {
+        var A_cssStr="";
+        if(i==A_pageNum)
+        {
+            A_cssStr="class=\"ShowPageNumSelect\"";
+        }
+        A_htmlStr+="<span "+A_cssStr+" onclick=\"_Fun_GoToPageNum('"+i.toString()+"')\">"+i.toString()+"</span>";
+    }
+    if(A_pageEnd<A_allPageNum)
+    {
+        A_htmlStr+="<span>...</span>";
+    }
+    $("#S_show_page_showPageNum_strong").html(A_htmlStr);
 }
 </script>
 <script language="javascript" type="text/javascript">

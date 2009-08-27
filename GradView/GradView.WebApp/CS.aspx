@@ -15,7 +15,6 @@
 <body>
     <form id="form1" runat="server">
     <div>
-    
         <table class="style1">
             <thead>
                 <tr>
