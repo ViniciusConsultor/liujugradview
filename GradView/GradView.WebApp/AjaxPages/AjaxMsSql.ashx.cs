@@ -53,9 +53,8 @@ namespace GradView.WebApp.AjaxPages
                 sqlStr += "AND (" + tableWhere + ")";
             }
             SqlParameter[] sp = { };
-            string DBCount = SqlHelper.ExecuteScalar(sqlStr, sp);
+            int DBNum = (int)SqlHelper.ExecuteScalar(sqlStr, sp);
             int showNum = Convert.ToInt32(pageShowNum);
-            int DBNum = Convert.ToInt32(DBCount);
             int pageNum = 0;
             if (DBNum % showNum != 0)
             {
