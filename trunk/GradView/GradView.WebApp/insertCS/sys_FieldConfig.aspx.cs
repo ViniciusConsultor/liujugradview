@@ -29,7 +29,7 @@ namespace GradView.WebApp.insertCS
             SysFieldconfig sfc = new SysFieldconfig();
             sfc.Xsid = Guid.NewGuid().ToString();
             sfc.Tableid = txtTableID.Text;
-            sfc.Fielename = txtFieldName.Text;
+            sfc.Fieldname = txtFieldName.Text;
             sfc.Fieldnamech = txtFieldNameCh.Text;
             sfc.Showmaxlength = Convert.ToInt32(txtShowMaxLength.Text);
             sfc.Showsort = Convert.ToInt32(txtShowSort.Text);

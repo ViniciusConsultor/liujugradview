@@ -127,10 +127,12 @@ namespace GradView.WebApp.insertCS
             stc.Isdel = "1";
             stc.Isedit = "1";
             stc.Ispage = "1";
+            stc.Issort = "1";
             stc.Tableid = Guid.NewGuid().ToString();
             stc.Tablename = "UserInfo";
             stc.Tablenamech = "学生信息表";
-            stc.Tablestyle = "style1.css";
+            stc.Showstyle = "style1.css";
+            stc.Editstyle = "EditStyle1.css";
             BizSysTableconfig.Insert(stc);
 
             Response.Redirect("sys_FieldConfig.aspx?tableID=" + stc.Tableid);
