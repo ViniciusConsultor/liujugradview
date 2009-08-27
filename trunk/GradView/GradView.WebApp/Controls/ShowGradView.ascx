@@ -212,6 +212,7 @@ function _Fun_AddSqlPageInfo()
     
     //对全局变量赋值
     _GVS_TablePKStr=F_tablePK;
+    _GVS_TableSPKStr=F_tableSPK;
     _GVS_FieldNameStr=F_tableField.substring(0,F_tableField.length-1);
     _GVS_FieldSNameStr=F_tableFieldS.substring(0,F_tableFieldS.length-1)
     _GVS_FieldNameChStr=F_tableFieldCh.substring(0,F_tableFieldCh.length-1);
@@ -239,19 +240,43 @@ function _Fun_DownAllPageNum()
 //得到页数据
 function _Fun_DownPageJsonInfo()
 {
-    $.ajax({
-        url:_GV_PostPage,
-        type:"POST",
-        dataType:"json",
-        async:false,
-        data:{_type:"s_downPageInfo",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFields:_GVS_FieldNameStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr,pageSize:_GVP_ShowPageNum,pageNum:_GVP_PageNum},
-        success:function(data){
-            _GV_TableInfoJson=data;
+    //是否分页
+    if(_GV_tableConfigJson.Ispage=="1")
+    {
+        $.ajax({
+            url:_GV_PostPage,
+            type:"POST",
+            dataType:"json",
+            async:false,
+            data:{_type:"s_downPageInfo",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFields:_GVS_FieldNameStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr,pageSize:_GVP_ShowPageNum,pageNum:_GVP_PageNum},
+            success:function(data){
+                _GV_TableInfoJson=data;
             
-            //绑定页里表格数据
-            _Fun_BindPageTable();
-        }
-    });
+                //绑定页里表格数据
+                _Fun_BindPageTable();
+            }
+        });
+    }else
+    {
+        $.ajax({
+            url:_GV_PostPage,
+            type:"POST",
+            dataType:"json",
+            async:false,
+            data:{_type:"s_downPageInfo_all",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFields:_GVS_FieldNameStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr},
+            success:function(data){
+                _GV_TableInfoJson=data;
+            
+                //绑定页里表格数据
+                _Fun_BindPageTable();
+                
+                //隐藏"表分页区"
+                $("#S_show_page_div").hide();
+            }
+        });
+    }
+    
+    
 }
 
 //绑定页里表格数据
@@ -280,8 +305,6 @@ function _Fun_BindPageTable()
     var B_tableNameCh=_GV_tableConfigJson.Tablenamech;
     //表简写主键
     var B_tableSPK=_GVS_TableSPKStr;
-    //是否分页
-    var B_isPage=_GV_tableConfigJson.Ispage=="1"?true:false;
     //是否可以全选
     var B_isAllSelect=_GV_tableConfigJson.Isallselect=="1"?true:false;
     //是否可以编辑
@@ -357,19 +380,19 @@ function _Fun_BindPageTable()
         //是否可以编辑
         if(B_isEdit)
         {
-            B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_edit_click('"+B_tableName+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">编辑</a></td>";
+            B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_edit_click('"+B_tableName+"','"+B_tableSPK+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">编辑</a></td>";
         }
         
         //是否可以删除
         if(B_isEdit)
         {
-            B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_del_click('"+B_tableName+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">编辑</a></td>";
+            B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_del_click('"+B_tableName+"','"+B_tableSPK+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">编辑</a></td>";
         }
         
         //是否可以自定列
         if(B_isAutoColumn)
         {
-            B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_autoCoulmn_click('"+B_tableName+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">"+B_AutoColumnName+"</a></td>";
+            B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_autoCoulmn_click('"+B_tableName+"','"+B_tableSPK+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">"+B_AutoColumnName+"</a></td>";
         }
         
         //结束一行
@@ -386,6 +409,119 @@ function _Fun_BindPageTable()
     //把表信息添加到"表显示区"
     $("#S_show_table_div").html(B_htmlStr);
     
+    //控制导航的数字显示
+    _Fun_S_show_page_div_NumChange();
+}
+
+//点击全选checkbox
+function _Fun_T_Table_thead_th_checkbox_click()
+{
+    var IsSelect=document.getElementById("T_Table_thead_th_checkbox").checked?true:false;
+    if(IsSelect)
+    {
+        $("#T_Table tbody input[type='checkbox'][name='T_Table_tbody_tr_checkbox_name']").attr("checked",true);
+    }else
+    {
+        $("#T_Table tbody input[type='checkbox'][name='T_Table_tbody_tr_checkbox_name']").attr("checked",false);
+    }
+}
+//查看选择结果
+function CheckBoxSelectStr()
+{
+    var selectStr="";
+    $("#T_Table tbody input:checked").each(function(){
+        selectStr+=$(this).attr("keyVal")+",";
+    });
+    selectStr=selectStr.substring(0,selectStr.length-1);
+    return selectStr;
+}
+//编辑
+function _Fun_T_Table_edit_click(tableName,tablePK,keyVal)
+{
+    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+}
+//删除
+function _Fun_T_Table_del_click(tableName,tablePK,keyVal)
+{
+    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+}
+
+//分页导航
+
+//首页
+function _Fun_S_show_page_firstPage_span_click()
+{
+    if(_GVP_PageNum==1)
+    {
+        return;
+    }
+    _GVP_PageNum=1;
+    //下载,绑定
+    _Fun_DownPageJsonInfo();
+}
+//上一页
+function _Fun_S_show_page_upPage_span_click()
+{
+    if(_GVP_PageNum==1)
+    {
+        return;
+    }
+    _GVP_PageNum-=1;
+    //下载,绑定
+    _Fun_DownPageJsonInfo();
+}
+//下一页
+function _Fun_S_show_page_nextPage_span_click()
+{
+    if(_GVP_PageNum>=_GVP_AllPageNum)
+    {
+        return;
+    }
+    _GVP_PageNum+=1;
+    //下载,绑定
+    _Fun_DownPageJsonInfo();
+}
+//尾页
+function _Fun_S_show_page_endPage_span_click()
+{
+    if(_GVP_PageNum==_GVP_AllPageNum)
+    {
+        return;
+    }
+    _GVP_PageNum=_GVP_AllPageNum;
+    //下载,绑定
+    _Fun_DownPageJsonInfo();
+}
+//跳到页
+function _Fun_GoToPageNum(pageNum)
+{
+    _GVP_PageNum=parseInt(pageNum);
+    //下载,绑定
+    _Fun_DownPageJsonInfo();
+}
+//跳到第几页
+function _Fun_S_show_page_goToPage_select_change()
+{
+    var pageNumber=$("#S_show_page_goToPage_select").val();
+    _Fun_GoToPageNum(pageNumber);
+}
+</script>
+<script language="javascript" type="text/javascript">
+//查看选择结果
+function showCheckBoxSelect()
+{
+    alert(CheckBoxSelectStr());
+}
+//自定义操作
+function _Fun_T_Table_autoCoulmn_click(tableName,tablePK,keyVal)
+{
+    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+}
+//控件导航的数据和下拉显示
+function _Fun_S_show_page_div_NumChange()
+{
+    $("#S_show_page_PageNum_a").text(_GVP_PageNum);
+    $("#S_show_page_goToPage_select").val(_GVP_PageNum);
 }
 </script>
 
@@ -393,7 +529,7 @@ function _Fun_BindPageTable()
     <div id="ShowControl_div">
         <%--功能操作区--%>
         <div id="S_click_div">
-            
+            <input type="button" value="查看选择结果" onclick="showCheckBoxSelect()" />
         </div>
         
         <%--查询控件区--%>
@@ -412,12 +548,12 @@ function _Fun_BindPageTable()
             <div id="S_show_page_div">
                 <span>总共有<a id="S_show_page_allPageNum_a"></a>页</span>
                 <span>当前为第<a id="S_show_page_PageNum_a">1</a>页</span>
-                <span id="S_show_page_firstPage_span" onclick="FirstPage_SpanClick()">首页</span>
-                <span id="S_show_page_upPage_span" onclick="UpPage_SpanClick()">上一页</span>
+                <span id="S_show_page_firstPage_span" onclick="_Fun_S_show_page_firstPage_span_click()">首页</span>
+                <span id="S_show_page_upPage_span" onclick="_Fun_S_show_page_upPage_span_click()">上一页</span>
                 <strong id="S_show_page_showPageNum_strong"></strong>
-                <span id="S_show_page_nextPage_span" onclick="NextPage_SpanClick()">下一页</span>
-                <span id="S_show_page_endPage_span" onclick="EndPage_SpanClick()">未页</span>
-                <span>跳到第<select id="S_show_page_goToPage_select" onchange="GoToPage_SelectChange()"></select>页</span>
+                <span id="S_show_page_nextPage_span" onclick="_Fun_S_show_page_nextPage_span_click()">下一页</span>
+                <span id="S_show_page_endPage_span" onclick="_Fun_S_show_page_endPage_span_click()">未页</span>
+                <span>跳到第<select id="S_show_page_goToPage_select" onchange="_Fun_S_show_page_goToPage_select_change()"></select>页</span>
             </div>
         </div>
     </div>

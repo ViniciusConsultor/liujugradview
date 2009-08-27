@@ -37,6 +37,27 @@ namespace GradView.WebApp.AjaxPages
             }
         }
 
+        /// <summary>
+        /// 发送表所有信息表前台
+        /// </summary>
+        /// <param name="context"></param>
+        private void Send_PageInfoJson_all(HttpContext context)
+        {
+            string tableName = context.Request.Form["tableName"].ToString();
+            string tablePK = context.Request.Form["tablePK"].ToString();
+            string tableFields = context.Request.Form["tableFields"].ToString();
+            string tableFrom = context.Request.Form["tableFrom"].ToString();
+            string tableWhere = context.Request.Form["tableWhere"].ToString();
+
+            string sqlStr = "SELECT " + tablePK + "," + tableFields + " FROM " + tableName + tableFrom + " WHERE (1=1)";
+            if (tableWhere != "")
+            {
+                sqlStr += " AND (" + tableWhere + ")";
+            }
+            DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, new SqlParameter[] { });
+            string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
+            context.Response.Write(resStr);
+        }
 
         /// <summary>
         /// 发送一页的数据到前台
