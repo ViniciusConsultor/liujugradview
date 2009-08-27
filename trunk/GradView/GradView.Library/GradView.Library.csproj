@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ControlModel\ShowFieldConfig.cs" />
     <Compile Include="Dao\DaoFactory.cs" />
     <Compile Include="Dao\SqlServer\DaoClassinfo.cs" />
     <Compile Include="Dao\SqlServer\DaoGradeinfo.cs" />
