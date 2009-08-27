@@ -31,9 +31,39 @@ namespace GradView.WebApp.AjaxPages
                     case "s_downTableConfig": Send_sysTableConfig(context); break;
                     case "s_downFieldConfig": Send_sysFieldConfig(context); break;
                     case "s_DownAllPageNum": Send_AllPageNum(context); break;
+                    case "s_downPageInfo": Send_PageInfoJson(context); break;
                     default: break;
                 }
             }
+        }
+
+
+        /// <summary>
+        /// 发送一页的数据到前台
+        /// </summary>
+        /// <param name="context"></param>
+        private void Send_PageInfoJson(HttpContext context)
+        {
+            string tableName = context.Request.Form["tableName"].ToString();
+            string tablePK = context.Request.Form["tablePK"].ToString();
+            string tableFields = context.Request.Form["tableFields"].ToString();
+            string tableFrom = context.Request.Form["tableFrom"].ToString();
+            string tableWhere = context.Request.Form["tableWhere"].ToString();
+            string pageSize = context.Request.Form["pageSize"].ToString();
+            string pageNum = context.Request.Form["pageNum"].ToString();
+
+            int IntPageSize = Convert.ToInt32(pageSize);
+            int IntPageNum = Convert.ToInt32(pageNum);
+            int SSize = (IntPageNum - 1) * IntPageSize;
+
+            string sqlStr = "SELECT TOP(" + pageSize + ") " + tablePK + "," + tableFields + " FROM " + tableName + tableFrom + " WHERE (" + tablePK + " NOT IN (SELECT TOP(" + SSize.ToString() + ") " + tablePK + " FROM " + tableName + "))";
+            if (tableWhere != "")
+            {
+                sqlStr += " AND (" + tableWhere + ")";
+            }
+            DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, new SqlParameter[] { });
+            string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
+            context.Response.Write(resStr);
         }
 
         /// <summary>
@@ -46,14 +76,14 @@ namespace GradView.WebApp.AjaxPages
             string tablePK = context.Request.Form["tablePK"].ToString();
             string tableFrom = context.Request.Form["tableFrom"].ToString();
             string tableWhere = context.Request.Form["tableWhere"].ToString();
-            string pageShowNum = context.Request.Form["pageShowNum"].ToString();
+            string pageShowNum = context.Request.Form["pageSize"].ToString();
             string sqlStr = "SELECT COUNT(" + tablePK + ") from " + tableName + tableFrom + " WHERE (1=1) ";
             if (tableWhere != "")
             {
                 sqlStr += "AND (" + tableWhere + ")";
             }
-            SqlParameter[] sp = { };
-            int DBNum = (int)SqlHelper.ExecuteScalar(sqlStr, sp);
+            //SqlParameter[] sp = { };
+            int DBNum = (int)SqlHelper.ExecuteScalar(sqlStr, new SqlParameter[] { });
             int showNum = Convert.ToInt32(pageShowNum);
             int pageNum = 0;
             if (DBNum % showNum != 0)
@@ -81,6 +111,7 @@ namespace GradView.WebApp.AjaxPages
             sp[0].Value = tableID;
             DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, sp);
             string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
+            //string resStr = new JsonTabHelper().DataTableToJson(ds.Tables[0]);
             context.Response.Write(resStr);
         }
 

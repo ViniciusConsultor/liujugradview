@@ -22,9 +22,11 @@ var _GVS_TableNameStr="";
 var _GVS_TablePKStr="";
 //表字段
 var _GVS_FieldNameStr="";
+//表字段简写
+var _GVS_FieldSNameStr="";
 //表字段中文
 var _GVS_FieldNameChStr="";
-//表from字条
+//表from字段
 var _GVS_From_TableAndJonnerStr="";
 //表条件
 var _GVS_WhereStr="";
@@ -46,6 +48,8 @@ $(document).ready(function(){
     _Fun_DownFieldConfigJson();
     //得到总共有多少页
     _Fun_DownAllPageNum();
+    //下载页数据
+    _Fun_DownPageJsonInfo();
     //加载排序JS和样式表文件
     _Fun_LoadTableSortAndStyleFile();
 });
@@ -152,39 +156,48 @@ function _Fun_AddSqlPageInfo()
     var F_tablePK="";
     //表字段
     var F_tableField="";
+    //表简写字段
+    var F_tableFieldS="";
     //表中文
     var F_tableFieldCh="";
     //SQLFrom
     var F_tableFron="";
     
     //表主键
-    var F_j=0;
-    while(_GV_FieldConfigJson[F_j]!=null)
+    var F_i=0;
+    while(_GV_FieldConfigJson[F_i]!=null)
     {
-        if(_GV_FieldConfigJson[F_j].isPK=="1")
+        if(_GV_FieldConfigJson[F_i].isPK=="1")
         {
-            F_tablePK=F_tableName+"."+_GV_FieldConfigJson[F_j].fieldName;
+            F_tablePK=F_tableName+"."+_GV_FieldConfigJson[F_i].fieldName;
             break;
         }
-        F_j++;
+        F_i++;
     }
     
-    //字段中文,字段,SQLForm
+    //字段中文,字段,SQLForm,表简写字段
     var i=0;
     while(_GV_FieldConfigJson[i]!=null)
     {
-        if(_GV_FieldConfigJson[i].isShow="1")
+        //如果显示
+        if(_GV_FieldConfigJson[i].isShow=="1")
         {
             //字段中文
             F_tableFieldCh+=_GV_FieldConfigJson[i].fieldNameCh+",";
+            
             //字段
             if(_GV_FieldConfigJson[i].isFK=="0")
             {
+                //字段
                 F_tableField+=F_tableName+"."+_GV_FieldConfigJson[i].fieldName+",";
+                //表简写字段
+                F_tableFieldS+=_GV_FieldConfigJson[i].fieldName+",";
             }else
             {
+                //字段
                 F_tableField+=_GV_FieldConfigJson[i].FKTableName+"."+_GV_FieldConfigJson[i].FKTableField+",";
-                
+                //表简写字段
+                F_tableFieldS+=_GV_FieldConfigJson[i].FKTableField+",";
                 //SQLForm
                 F_tableFron+=" INNER JOIN "+_GV_FieldConfigJson[i].FKTableName+" ON "+F_tableName+"."+_GV_FieldConfigJson[i].fieldName+" = "+_GV_FieldConfigJson[i].FKTableName+"."+_GV_FieldConfigJson[i].FKTablePK;
             }
@@ -195,14 +208,16 @@ function _Fun_AddSqlPageInfo()
     //对全局变量赋值
     _GVS_TablePKStr=F_tablePK;
     _GVS_FieldNameStr=F_tableField.substring(0,F_tableField.length-1);
+    _GVS_FieldSNameStr=F_tableFieldS.substring(0,F_tableFieldS.length-1)
     _GVS_FieldNameChStr=F_tableFieldCh.substring(0,F_tableFieldCh.length-1);
     _GVS_From_TableAndJonnerStr=F_tableFron;
+    alert(_GVS_FieldSNameStr);
 }
 
 //下载总共有多少页
 function _Fun_DownAllPageNum()
 {
-    $.post(_GV_PostPage,{_type:"s_DownAllPageNum",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr,pageShowNum:_GVP_ShowPageNum},function(data){
+    $.post(_GV_PostPage,{_type:"s_DownAllPageNum",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr,pageSize:_GVP_ShowPageNum},function(data){
         _GVP_AllPageNum=parseInt(data);
         
         //总共有多少页
@@ -219,6 +234,21 @@ function _Fun_DownAllPageNum()
 
 //得到页数据
 function _Fun_DownPageJsonInfo()
+{
+    $.ajax({
+        url:_GV_PostPage,
+        type:"POST",
+        dataType:"json",
+        async:false,
+        data:{_type:"s_downPageInfo",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFields:_GVS_FieldNameStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr,pageSize:_GVP_ShowPageNum,pageNum:_GVP_PageNum},
+        success:function(data){
+            _GV_TableInfoJson=data;
+        }
+    });
+}
+
+//绑定页里表格数据
+function _Fun_BindPageTable()
 {
     
 }
@@ -238,9 +268,9 @@ function _Fun_DownPageJsonInfo()
         
         <%--显示控件区--%>
         <div id="S_show_div">
+        
             <%--表显示区--%>
             <div id="S_show_table_div">
-            
             </div>
             
             <%--表分页区--%>
