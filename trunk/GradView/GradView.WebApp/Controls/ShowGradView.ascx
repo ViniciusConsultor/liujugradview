@@ -8,6 +8,8 @@ var _GV_tableID="9014b630-de80-42c8-b21b-ee8e8518ef22";
 var _GV_tableConfigJson=new Array();
 //表在sys_FieldConfig中的配置信息
 var _GV_FieldConfigJson=new Array();
+//得到的页JOSN数据
+var _GV_TableInfoJson=new Array();
 //要post的页
 var _GV_PostPage="AjaxPages/AjaxMsSql.ashx";
 //加载排序JavaScript文件tableSorter.js是否成功
@@ -38,8 +40,13 @@ var _GVP_ShowPageNum=10;
 
 //页面开始要运行的
 $(document).ready(function(){
+    //得到sys_tableConfig配置信息
     _Fun_DownTableConfigJson();
+    //得到sys_fieldConfig配置信息
     _Fun_DownFieldConfigJson();
+    //得到总共有多少页
+    _Fun_DownAllPageNum();
+    //加载排序JS和样式表文件
     _Fun_LoadTableSortAndStyleFile();
 });
 
@@ -200,12 +207,20 @@ function _Fun_DownAllPageNum()
         
         //总共有多少页
         $("#S_show_page_allPageNum_a").text(data);
-        var S_show_page_goToPage_selectHtml="";
-        for(var i=0;i<parseInt(data);i++)
+        var selectHtml="";
+        for(var i=1;i<=parseInt(data);i++)
         {
-            
+            selectHtml+="<option value=\""+i.toString()+"\">"+i.toString()+"</option>";
         }
+        //跳到第几页
+        $("#S_show_page_goToPage_select").html(selectHtml);
     });
+}
+
+//得到页数据
+function _Fun_DownPageJsonInfo()
+{
+    
 }
 </script>
 

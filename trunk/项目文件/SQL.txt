@@ -62,3 +62,11 @@ FROM         UserInfo INNER JOIN
 WHERE     (1 = 1) AND (UserInfo.xsid NOT IN
                           (SELECT     TOP (20) xsid
                             FROM          UserInfo AS UserInfo_1))
+
+
+
+SELECT     COUNT(UserInfo.xsid) AS Expr1
+FROM         UserInfo INNER JOIN
+                      GradeInfo ON UserInfo.njid = GradeInfo.njid INNER JOIN
+                      ClassInfo ON UserInfo.bjid = ClassInfo.bjid
+WHERE     (1 = 1)
