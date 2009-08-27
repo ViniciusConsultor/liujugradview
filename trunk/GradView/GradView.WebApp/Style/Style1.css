@@ -1,4 +1,4 @@
-﻿#AjaxGradView{
+﻿#T_Table{
       width:100%;
       color:#000000; 
       border-collapse:collapse;
@@ -7,10 +7,12 @@
       text-align:center;
       line-height:24px;        
 }
-#AjaxGradView thead tr{ background-color:#74cce0;font-weight:bold;cursor:pointer }
-#AjaxGradView tbody tr{ background-color:#e8f9ff;}
-#AjaxGradView tbody tr:hover{background-color:#c4efff;}
-#AjaxGradView tbody tr a{cursor:pointer;}
+#T_Table thead tr{ background-color:#74cce0;font-weight:bold;cursor:pointer }
+#T_Table tbody tr{ background-color:#e8f9ff;}
+#T_Table tbody tr:hover{background-color:#c4efff;}
+#T_Table tbody tr a{cursor:pointer;}
+
+
 #AjaxTablePage_Div{}
 #AjaxTablePage_Div span{cursor:pointer;margin:5 0 5 10;}
 #AjaxTablePage_Div span:hover{background-color:#dbdbdb;}

@@ -18,15 +18,17 @@ var _GV_LoadTableSorterIsTrue=false;
 
 //表名,中_Fun_DownTableConfigJson()对其赋值了
 var _GVS_TableNameStr="";
-//表主键
+//表主键(UserInfo.xsid)
 var _GVS_TablePKStr="";
-//表字段
+//简写主键(xsid)
+var _GVS_TableSPKStr="";
+//表字段(UserInfo.xsid,GradeInfo.njmc)
 var _GVS_FieldNameStr="";
-//表字段简写
+//表字段简写(xsid,njmc)
 var _GVS_FieldSNameStr="";
 //表字段中文
 var _GVS_FieldNameChStr="";
-//表from字段
+//表from字段(INNER JOIN GradeInfo ON)
 var _GVS_From_TableAndJonnerStr="";
 //表条件
 var _GVS_WhereStr="";
@@ -154,6 +156,8 @@ function _Fun_AddSqlPageInfo()
     var F_tableName=_GVS_TableNameStr;
     //表主键
     var F_tablePK="";
+    //表简写主键
+    var F_tableSPK="";
     //表字段
     var F_tableField="";
     //表简写字段
@@ -170,6 +174,7 @@ function _Fun_AddSqlPageInfo()
         if(_GV_FieldConfigJson[F_i].isPK=="1")
         {
             F_tablePK=F_tableName+"."+_GV_FieldConfigJson[F_i].fieldName;
+            F_tableSPK=_GV_FieldConfigJson[F_i].fieldName;
             break;
         }
         F_i++;
@@ -211,7 +216,6 @@ function _Fun_AddSqlPageInfo()
     _GVS_FieldSNameStr=F_tableFieldS.substring(0,F_tableFieldS.length-1)
     _GVS_FieldNameChStr=F_tableFieldCh.substring(0,F_tableFieldCh.length-1);
     _GVS_From_TableAndJonnerStr=F_tableFron;
-    alert(_GVS_FieldSNameStr);
 }
 
 //下载总共有多少页
@@ -243,13 +247,144 @@ function _Fun_DownPageJsonInfo()
         data:{_type:"s_downPageInfo",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFields:_GVS_FieldNameStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr,pageSize:_GVP_ShowPageNum,pageNum:_GVP_PageNum},
         success:function(data){
             _GV_TableInfoJson=data;
+            
+            //绑定页里表格数据
+            _Fun_BindPageTable();
         }
     });
 }
 
 //绑定页里表格数据
+/*
+{
+"0":{"xsid":"08a6b158-ac98-403c-88c2-48af0babd6f1","njmc":"3年级","bjmc":"130班","xh":"066530332","mm":"123456","sfz":"430122198711186710","csrq":"1987-11-18","dh":"13873111840","qq":"995506770","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"0","xl":"2"},
+"1":{"xsid":"b7170608-950b-42c1-8b88-18c918192aab","njmc":"2年级","bjmc":"129班","xh":"066530333","mm":"123456","sfz":"430122198711186711","csrq":"1987-11-18","dh":"13873111841","qq":"995506771","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"1","xl":"0"},
+"2":{"xsid":"cfa38730-19cf-49c1-91a9-4d713aba2d08","njmc":"2年级","bjmc":"129班","xh":"066530334","mm":"123456","sfz":"430122198711186712","csrq":"1987-11-18","dh":"13873111842","qq":"995506772","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"0","xl":"0"},
+"3":{"xsid":"6f07a54c-1f0b-4995-94e8-d310140d2306","njmc":"2年级","bjmc":"129班","xh":"066530335","mm":"123456","sfz":"430122198711186713","csrq":"1987-11-18","dh":"13873111843","qq":"995506773","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"1","xl":"0"},
+"4":{"xsid":"4a64e398-fb2c-4246-bb9a-0f51aff9adcf","njmc":"2年级","bjmc":"129班","xh":"066530336","mm":"123456","sfz":"430122198711186714","csrq":"1987-11-18","dh":"13873111844","qq":"995506774","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"0","xl":"0"},
+"5":{"xsid":"e696f9f9-f1ce-4e60-88ca-03ce69c4064b","njmc":"2年级","bjmc":"129班","xh":"066530337","mm":"123456","sfz":"430122198711186715","csrq":"1987-11-18","dh":"13873111845","qq":"995506775","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"1","xl":"0"},
+"6":{"xsid":"2d222c9c-1fee-4d1d-bdcc-b24db831cce3","njmc":"2年级","bjmc":"129班","xh":"066530338","mm":"123456","sfz":"430122198711186716","csrq":"1987-11-18","dh":"13873111846","qq":"995506776","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"0","xl":"0"},
+"7":{"xsid":"aa6faaef-b6ff-4e60-89ab-1046f61c7a2e","njmc":"2年级","bjmc":"129班","xh":"066530339","mm":"123456","sfz":"430122198711186717","csrq":"1987-11-18","dh":"13873111847","qq":"995506777","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"1","xl":"0"},
+"8":{"xsid":"5598575f-486b-47f8-901a-c50790f03f5d","njmc":"2年级","bjmc":"129班","xh":"066530340","mm":"123456","sfz":"430122198711186718","csrq":"1987-11-18","dh":"13873111848","qq":"995506778","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"0","xl":"0"},
+"9":{"xsid":"5b84811a-2b64-4b6f-a0a6-35f631301b6c","njmc":"2年级","bjmc":"129班","xh":"066530341","mm":"123456","sfz":"430122198711186719","csrq":"1987-11-18","dh":"13873111849","qq":"995506779","yx":"liuju150@vip.qq.com","dz":"湖南长沙","zp":"sys.jpg","xb":"1","xl":"0"}
+}
+*/
 function _Fun_BindPageTable()
 {
+    var B_tableHeadArray=_GVS_FieldNameChStr.split(",");
+    var B_tableBodyArray=_GVS_FieldSNameStr.split(",");
+    
+    //表英文名称
+    var B_tableName=_GV_tableConfigJson.Tablename;
+    //表中文名称
+    var B_tableNameCh=_GV_tableConfigJson.Tablenamech;
+    //表简写主键
+    var B_tableSPK=_GVS_TableSPKStr;
+    //是否分页
+    var B_isPage=_GV_tableConfigJson.Ispage=="1"?true:false;
+    //是否可以全选
+    var B_isAllSelect=_GV_tableConfigJson.Isallselect=="1"?true:false;
+    //是否可以编辑
+    var B_isEdit=_GV_tableConfigJson.Isedit=="1"?true:false;
+    //是否删除
+    var B_isDel=_GV_tableConfigJson.Isdel=="1"?true:false;
+    //是否可以自定义列
+    var B_isAutoColumn=_GV_tableConfigJson.Iscustomcolumn=="1"?true:false;
+    //自定义列名
+    var B_AutoColumnName=_GV_tableConfigJson.Customcolumnname;
+    
+    //表开始
+    var B_htmlStr="<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" id=\"T_Table\">";
+    
+    //添加表头
+    B_htmlStr+="<thead><tr>";
+    
+    //是否可以全选
+    if(B_isAllSelect)
+    {
+        B_htmlStr+="<th><input id=\"T_Table_thead_th_checkbox\" type=\"checkbox\" title=\"全选\" onclick=\"_Fun_T_Table_thead_th_checkbox_click()\" /></th>";
+    }
+    
+    //添加文字表头
+    for(var i=0;i<B_tableHeadArray.length;i++)
+    {
+        B_htmlStr+="<th title=\"点击排序\">"+B_tableHeadArray[i]+"</th>";
+    }
+    
+    //是否可以编辑
+    if(B_isEdit)
+    {
+        B_htmlStr+="<th title=\"点击编辑\">编辑</th>";
+    }
+    
+    //是否可以删除
+    if(B_isDel)
+    {
+        B_htmlStr+="<th title=\"点击删除\">删除</th>";
+    }
+    
+    //是否可以自定列
+    if(B_isAutoColumn)
+    {
+        B_htmlStr+="<th title=\"点击操作\">"+B_AutoColumnName+"</th>";
+    }
+    
+    //表头添加结束
+    B_htmlStr+="</tr></thead>";
+    
+    //开始添加表身
+    B_htmlStr+="<tbody>";
+    
+    //遍历表信息
+    var Ti=0;
+    while(_GV_TableInfoJson[Ti]!=null)
+    {
+        //开始一行
+        B_htmlStr+="<tr>";
+        
+        //是否可以全选
+        if(B_isAllSelect)
+        {
+            B_htmlStr+="<td><input type=\"checkbox\" name=\"T_Table_tbody_tr_checkbox_name\" keyVal=\""+_GV_TableInfoJson[Ti][B_tableSPK]+"\" /></td>";
+        }
+        
+        //添加信息
+        for(var Tj=0;Tj<B_tableBodyArray.length;Tj++)
+        {
+            B_htmlStr+="<td>"+_GV_TableInfoJson[Ti][B_tableBodyArray[Tj]]+"</td>";
+        }
+        
+        //是否可以编辑
+        if(B_isEdit)
+        {
+            B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_edit_click('"+B_tableName+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">编辑</a></td>";
+        }
+        
+        //是否可以删除
+        if(B_isEdit)
+        {
+            B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_del_click('"+B_tableName+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">编辑</a></td>";
+        }
+        
+        //是否可以自定列
+        if(B_isAutoColumn)
+        {
+            B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_autoCoulmn_click('"+B_tableName+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">"+B_AutoColumnName+"</a></td>";
+        }
+        
+        //结束一行
+        B_htmlStr+="</tr>";
+        Ti++;
+    }
+    
+    //结束表身
+    B_htmlStr+="</tbody>";
+    
+    //结束表
+    B_htmlStr+="</table>";
+    
+    //把表信息添加到"表显示区"
+    $("#S_show_table_div").html(B_htmlStr);
     
 }
 </script>

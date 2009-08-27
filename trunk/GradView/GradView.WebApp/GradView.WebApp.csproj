@@ -104,6 +104,13 @@
     <Compile Include="Controls\ShowGradView.ascx.designer.cs">
       <DependentUpon>ShowGradView.ascx</DependentUpon>
     </Compile>
+    <Compile Include="CS.aspx.cs">
+      <DependentUpon>CS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CS.aspx.designer.cs">
+      <DependentUpon>CS.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EditPage.aspx.cs">
       <DependentUpon>EditPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -151,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AjaxPages\AjaxOracle.ashx" />
+    <Content Include="CS.aspx" />
     <Content Include="EditPage.aspx" />
     <Content Include="ShowPage.aspx" />
   </ItemGroup>
