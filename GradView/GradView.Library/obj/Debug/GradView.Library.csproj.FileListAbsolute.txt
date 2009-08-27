@@ -8,3 +8,8 @@ D:\GradView\GradView\GradView.Library\bin\Debug\GradView.Library.dll
 D:\GradView\GradView\GradView.Library\bin\Debug\GradView.Library.pdb
 D:\GradView\GradView\GradView.Library\obj\Debug\GradView.Library.dll
 D:\GradView\GradView\GradView.Library\obj\Debug\GradView.Library.pdb
+E:\GradView\GradView\GradView.Library\obj\Debug\ResolveAssemblyReference.cache
+E:\GradView\GradView\GradView.Library\bin\Debug\GradView.Library.dll
+E:\GradView\GradView\GradView.Library\bin\Debug\GradView.Library.pdb
+E:\GradView\GradView\GradView.Library\obj\Debug\GradView.Library.dll
+E:\GradView\GradView\GradView.Library\obj\Debug\GradView.Library.pdb
