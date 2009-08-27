@@ -88,6 +88,7 @@
       <DependentUpon>AjaxOracle.ashx</DependentUpon>
     </Compile>
     <Compile Include="App_Code\JsonHelper.cs" />
+    <Content Include="App_Code\JsonTabHelper.cs" />
     <Compile Include="App_Code\JsonTableHelper.cs" />
     <Compile Include="Controls\EditGradView.ascx.cs">
       <DependentUpon>EditGradView.ascx</DependentUpon>

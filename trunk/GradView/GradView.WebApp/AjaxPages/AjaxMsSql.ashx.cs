@@ -30,9 +30,42 @@ namespace GradView.WebApp.AjaxPages
                 {
                     case "s_downTableConfig": Send_sysTableConfig(context); break;
                     case "s_downFieldConfig": Send_sysFieldConfig(context); break;
+                    case "s_DownAllPageNum": Send_AllPageNum(context); break;
                     default: break;
                 }
             }
+        }
+
+        /// <summary>
+        /// 发送总页数到前台
+        /// </summary>
+        /// <param name="context"></param>
+        private void Send_AllPageNum(HttpContext context)
+        {
+            string tableName = context.Request.Form["tableName"].ToString();
+            string tablePK = context.Request.Form["tablePK"].ToString();
+            string tableFrom = context.Request.Form["tableFrom"].ToString();
+            string tableWhere = context.Request.Form["tableWhere"].ToString();
+            string pageShowNum = context.Request.Form["pageShowNum"].ToString();
+            string sqlStr = "SELECT COUNT(" + tablePK + ") from " + tableName + tableFrom + " WHERE (1=1) ";
+            if (tableWhere != "")
+            {
+                sqlStr += "AND (" + tableWhere + ")";
+            }
+            SqlParameter[] sp = { };
+            string DBCount = SqlHelper.ExecuteScalar(sqlStr, sp);
+            int showNum = Convert.ToInt32(pageShowNum);
+            int DBNum = Convert.ToInt32(DBCount);
+            int pageNum = 0;
+            if (DBNum % showNum != 0)
+            {
+                pageNum = DBNum / showNum + 1;
+            }
+            else
+            {
+                pageNum = DBNum / showNum;
+            }
+            context.Response.Write(pageNum.ToString());
         }
 
         /// <summary>

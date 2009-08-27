@@ -14,19 +14,33 @@ var _GV_PostPage="AjaxPages/AjaxMsSql.ashx";
 var _GV_LoadTableSorterIsTrue=false;
 
 
-var _GV_TableNameStr="";
-var _GV_TablePKStr="";
-var _GV_FieldNameStr="";
-var _GV_FieldNameChStr="";
-var _GV_From_TableAndJonnerStr="";
-var _GV_WhereStr="";
+//表名,中_Fun_DownTableConfigJson()对其赋值了
+var _GVS_TableNameStr="";
+//表主键
+var _GVS_TablePKStr="";
+//表字段
+var _GVS_FieldNameStr="";
+//表字段中文
+var _GVS_FieldNameChStr="";
+//表from字条
+var _GVS_From_TableAndJonnerStr="";
+//表条件
+var _GVS_WhereStr="";
+
+
+//当前页
+var _GVP_PageNum=1;
+//总共同有多少页
+var _GVP_AllPageNum=1;
+//每页显示的记录数
+var _GVP_ShowPageNum=10;
 
 
 //页面开始要运行的
 $(document).ready(function(){
     _Fun_DownTableConfigJson();
-    _Fun_LoadTableSortAndStyleFile();
     _Fun_DownFieldConfigJson();
+    _Fun_LoadTableSortAndStyleFile();
 });
 
 
@@ -58,6 +72,8 @@ function _Fun_DownTableConfigJson()
         data:{_type:"s_downTableConfig",tableID:_GV_tableID},
         success:function(data){
             _GV_tableConfigJson=data;
+            //把表名赋值
+            _GVS_TableNameStr=_GV_tableConfigJson.Tablename;
         }
     });
 }
@@ -70,7 +86,7 @@ function _Fun_LoadTableSortAndStyleFile()
             _GV_LoadTableSorterIsTrue=true;
         });
     }
-    if(_GV_tableConfigJson.Tablestyle.length>4)
+    if(_GV_tableConfigJson.Showstyle.length>4)
     {
         var styleUrl="/Style/"+_GV_tableConfigJson.Showstyle;
         $("#S_TableStyleFile").attr("href",styleUrl);
@@ -105,6 +121,8 @@ function _Fun_DownFieldConfigJson()
         data:{_type:"s_downFieldConfig",tableID:_GV_tableID},
         success:function(data){
             _GV_FieldConfigJson=data;
+            //拼接SQL
+            _Fun_AddSqlPageInfo();
         }
     });
 }
@@ -119,14 +137,75 @@ WHERE     (1 = 1) AND (UserInfo.xsid NOT IN
                           (SELECT     TOP (20) xsid
                             FROM          UserInfo AS UserInfo_1))
 */
-function _Fun_AddSqlPageInfo(pageNum)
+function _Fun_AddSqlPageInfo()
 {
-    var sqlStr="select ";
-    var tableName
-    for(var i=0;i<_GV_FieldConfigJson.length;i++)
+    //表名
+    var F_tableName=_GVS_TableNameStr;
+    //表主键
+    var F_tablePK="";
+    //表字段
+    var F_tableField="";
+    //表中文
+    var F_tableFieldCh="";
+    //SQLFrom
+    var F_tableFron="";
+    
+    //表主键
+    var F_j=0;
+    while(_GV_FieldConfigJson[F_j]!=null)
     {
-        
+        if(_GV_FieldConfigJson[F_j].isPK=="1")
+        {
+            F_tablePK=F_tableName+"."+_GV_FieldConfigJson[F_j].fieldName;
+            break;
+        }
+        F_j++;
     }
+    
+    //字段中文,字段,SQLForm
+    var i=0;
+    while(_GV_FieldConfigJson[i]!=null)
+    {
+        if(_GV_FieldConfigJson[i].isShow="1")
+        {
+            //字段中文
+            F_tableFieldCh+=_GV_FieldConfigJson[i].fieldNameCh+",";
+            //字段
+            if(_GV_FieldConfigJson[i].isFK=="0")
+            {
+                F_tableField+=F_tableName+"."+_GV_FieldConfigJson[i].fieldName+",";
+            }else
+            {
+                F_tableField+=_GV_FieldConfigJson[i].FKTableName+"."+_GV_FieldConfigJson[i].FKTableField+",";
+                
+                //SQLForm
+                F_tableFron+=" INNER JOIN "+_GV_FieldConfigJson[i].FKTableName+" ON "+F_tableName+"."+_GV_FieldConfigJson[i].fieldName+" = "+_GV_FieldConfigJson[i].FKTableName+"."+_GV_FieldConfigJson[i].FKTablePK;
+            }
+        }
+        i++;
+    }
+    
+    //对全局变量赋值
+    _GVS_TablePKStr=F_tablePK;
+    _GVS_FieldNameStr=F_tableField.substring(0,F_tableField.length-1);
+    _GVS_FieldNameChStr=F_tableFieldCh.substring(0,F_tableFieldCh.length-1);
+    _GVS_From_TableAndJonnerStr=F_tableFron;
+}
+
+//下载总共有多少页
+function _Fun_DownAllPageNum()
+{
+    $.post(_GV_PostPage,{_type:"s_DownAllPageNum",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr,pageShowNum:_GVP_ShowPageNum},function(data){
+        _GVP_AllPageNum=parseInt(data);
+        
+        //总共有多少页
+        $("#S_show_page_allPageNum_a").text(data);
+        var S_show_page_goToPage_selectHtml="";
+        for(var i=0;i<parseInt(data);i++)
+        {
+            
+        }
+    });
 }
 </script>
 
