@@ -12,3 +12,10 @@ D:\GradView\GradView\GradView.WebApp\obj\Debug\GradView.WebApp.dll
 D:\GradView\GradView\GradView.WebApp\obj\Debug\GradView.WebApp.pdb
 D:\GradView\GradView\GradView.WebApp\bin\GradView.Library.dll
 D:\GradView\GradView\GradView.WebApp\bin\GradView.Library.pdb
+E:\GradView\GradView\GradView.WebApp\obj\Debug\ResolveAssemblyReference.cache
+E:\GradView\GradView\GradView.WebApp\bin\GradView.WebApp.dll
+E:\GradView\GradView\GradView.WebApp\bin\GradView.WebApp.pdb
+E:\GradView\GradView\GradView.WebApp\bin\GradView.Library.dll
+E:\GradView\GradView\GradView.WebApp\bin\GradView.Library.pdb
+E:\GradView\GradView\GradView.WebApp\obj\Debug\GradView.WebApp.dll
+E:\GradView\GradView\GradView.WebApp\obj\Debug\GradView.WebApp.pdb
