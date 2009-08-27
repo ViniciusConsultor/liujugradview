@@ -13,8 +13,8 @@
 #T_Table tbody tr a{cursor:pointer;}
 
 
-#AjaxTablePage_Div{}
-#AjaxTablePage_Div span{cursor:pointer;margin:5 0 5 10;}
-#AjaxTablePage_Div span:hover{background-color:#dbdbdb;}
-#ShowPageNum_strong span{ margin-left:5px;}
+#S_show_page_div{}
+#S_show_page_div span{cursor:pointer;margin:5 0 5 10;}
+#S_show_page_div span:hover{background-color:#dbdbdb;}
+#S_show_page_showPageNum_strong span{ margin-left:5px;}
 .ShowPageNumSelect{color:Red;}
