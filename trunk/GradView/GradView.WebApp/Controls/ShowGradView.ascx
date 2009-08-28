@@ -32,6 +32,10 @@ var _GVS_FieldNameChStr="";
 var _GVS_From_TableAndJonnerStr="";
 //表条件
 var _GVS_WhereStr="";
+//要下载字典的字段
+var _GVS_KeyFieldStr="";
+//下载字典的字典编号
+var _GVS_KeyTableIDStr="";
 
 
 //当前页
@@ -166,8 +170,12 @@ function _Fun_AddSqlPageInfo()
     var F_tableFieldCh="";
     //SQLFrom
     var F_tableFron="";
+    //要下载字典的字段
+    var F_keyField="";
+    //字典表编号
+    var F_keyTableID="";
     
-    //表主键
+    //表主键,表简写主键
     var F_i=0;
     while(_GV_FieldConfigJson[F_i]!=null)
     {
@@ -180,7 +188,7 @@ function _Fun_AddSqlPageInfo()
         F_i++;
     }
     
-    //字段中文,字段,SQLForm,表简写字段
+    //字段中文,字段,SQLForm,表简写字段,要下载字典的字段,字典表编号
     var i=0;
     while(_GV_FieldConfigJson[i]!=null)
     {
@@ -206,17 +214,36 @@ function _Fun_AddSqlPageInfo()
                 //SQLForm
                 F_tableFron+=" INNER JOIN "+_GV_FieldConfigJson[i].FKTableName+" ON "+F_tableName+"."+_GV_FieldConfigJson[i].fieldName+" = "+_GV_FieldConfigJson[i].FKTableName+"."+_GV_FieldConfigJson[i].FKTablePK;
             }
+            //要下载字典的字段,字典表编号
+            if(_GV_FieldConfigJson[i].keyTableID != "")
+            {
+                //要下载字典的字段
+                F_keyField+=_GV_FieldConfigJson[i].fieldName+",";
+                //字典表编号
+                F_keyTableID+=_GV_FieldConfigJson[i].keyTableID+",";
+            }
         }
         i++;
     }
     
     //对全局变量赋值
+    
+    //表主键(UserInfo.xsid)
     _GVS_TablePKStr=F_tablePK;
+    //表简写主键(xsid)
     _GVS_TableSPKStr=F_tableSPK;
+    //表字段(UserInfo.xsid,GradeInfo.njid,...)
     _GVS_FieldNameStr=F_tableField.substring(0,F_tableField.length-1);
-    _GVS_FieldSNameStr=F_tableFieldS.substring(0,F_tableFieldS.length-1)
+    //表简写字段(xsid,njmc,...)
+    _GVS_FieldSNameStr=F_tableFieldS.substring(0,F_tableFieldS.length-1);
+    //表字段中文(学生编辑,年级名称)
     _GVS_FieldNameChStr=F_tableFieldCh.substring(0,F_tableFieldCh.length-1);
+    //表连接字符串(INNER JOIN GradeInfo ON... INNER......)
     _GVS_From_TableAndJonnerStr=F_tableFron;
+    //要下载字典的字段
+    _GVS_KeyFieldStr=F_keyField.substring(0,F_keyField.length-1);
+    //字典表编号
+    _GVS_KeyTableIDStr=F_keyTableID.substring(0,F_keyTableID.length-1);
 }
 
 //下载总共有多少页
@@ -254,7 +281,10 @@ function _Fun_DownPageJsonInfo()
             data:{_type:"s_downPageInfo",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFields:_GVS_FieldNameStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr,pageSize:_GVP_ShowPageNum,pageNum:_GVP_PageNum},
             success:function(data){
                 _GV_TableInfoJson=data;
-            
+                
+                //改写字典数据
+                _Fun_ChangeKeyColumnInfo();
+                
                 //绑定页里表格数据
                 _Fun_BindPageTable();
             }
@@ -272,7 +302,10 @@ function _Fun_DownPageJsonInfo()
             data:{_type:"s_downPageInfo_all",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFields:_GVS_FieldNameStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr},
             success:function(data){
                 _GV_TableInfoJson=data;
-            
+                
+                //改写字典数据
+                _Fun_ChangeKeyColumnInfo();
+                
                 //绑定页里表格数据
                 _Fun_BindPageTable();
                 
@@ -284,7 +317,41 @@ function _Fun_DownPageJsonInfo()
     
     
 }
-
+//改写字典显示字段数据 keyName, keyCode
+function _Fun_ChangeKeyColumnInfo()
+{
+    //是字典的字段字条串
+    var C_keyColumnArray=_GVS_KeyFieldStr.split(",");
+    //字典表的编号
+    var C_keyIDArray=_GVS_KeyTableIDStr.split(",");
+    for(var i=0;i<C_keyColumnArray.length;i++)
+    {
+        $.ajax({
+            url:_GV_PostPage,
+            type:"POST",
+            dataType:"json",
+            async:false,
+            data:{_type:"s_downKeyTableInfo",KeyTableID:C_keyIDArray[i]},
+            success:function(data){
+                var Ci=0;
+                while(_GV_TableInfoJson[Ci]!=null)
+                {
+                    var Cj=0;
+                    while(data[Cj]!=null)
+                    {
+                        if(_GV_TableInfoJson[Ci][C_keyColumnArray[i]]==data[Cj]["keyCode"])
+                        {
+                            _GV_TableInfoJson[Ci][C_keyColumnArray[i]]=data[Cj]["keyName"];
+                            break;
+                        }
+                        Cj++;
+                    }
+                    Ci++;
+                }
+            }
+        });
+    }
+}
 //绑定页里表格数据
 /*
 {

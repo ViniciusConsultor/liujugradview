@@ -32,9 +32,28 @@ namespace GradView.WebApp.AjaxPages
                     case "s_downFieldConfig": Send_sysFieldConfig(context); break;
                     case "s_DownAllPageNum": Send_AllPageNum(context); break;
                     case "s_downPageInfo": Send_PageInfoJson(context); break;
+                    case "s_downKeyTableInfo": Send_KeyTableInfoJson(context); break;
                     default: break;
                 }
             }
+        }
+
+        /// <summary>
+        /// 下载字典信息到前台
+        /// </summary>
+        /// <param name="context"></param>
+        private void Send_KeyTableInfoJson(HttpContext context)
+        {
+            string KeyTableID = context.Request.Form["KeyTableID"].ToString();
+            string sqlStr = "select keyTableSelect from sys_keys where keyTableID=@keyTableID";
+            SqlParameter[] sp = {
+                                    new SqlParameter("@keyTableID", SqlDbType.VarChar, 40)
+                                };
+            sp[0].Value = KeyTableID;
+            sqlStr = SqlHelper.ExecuteScalar(sqlStr, sp).ToString();
+            DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, new SqlParameter[] { });
+            string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
+            context.Response.Write(resStr);
         }
 
         /// <summary>
