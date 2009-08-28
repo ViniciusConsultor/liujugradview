@@ -12,7 +12,7 @@
     <form id="form1" runat="server">
     <div>
     
-        <uc1:ShowGradView ID="ShowGradView1" runat="server" />
+        <uc1:ShowGradView ID="SGV" runat="server" />
     
     </div>
     </form>

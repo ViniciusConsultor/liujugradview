@@ -3,7 +3,7 @@
 <script src="../JavaScript/jquery.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 //表编号(在sys_tableConfig中表的编号)
-var _GV_tableID="9014b630-de80-42c8-b21b-ee8e8518ef22";
+var _GV_tableID="<%= tableID %>";
 //在表sys_tableConfig中的配置信息
 var _GV_tableConfigJson=new Array();
 //表在sys_FieldConfig中的配置信息
@@ -11,7 +11,7 @@ var _GV_FieldConfigJson=new Array();
 //得到的页JOSN数据
 var _GV_TableInfoJson=new Array();
 //要post的页
-var _GV_PostPage="AjaxPages/AjaxMsSql.ashx";
+var _GV_PostPage="<%= postAshxPage %>";
 //加载排序JavaScript文件tableSorter.js是否成功
 var _GV_LoadTableSorterIsTrue=false;
 
@@ -43,7 +43,7 @@ var _GVP_PageNum=1;
 //总共同有多少页
 var _GVP_AllPageNum=1;
 //每页显示的记录数
-var _GVP_ShowPageNum=10;
+var _GVP_ShowPageNum=<%= pageSize %>;
 
 
 //页面开始要运行的
@@ -318,6 +318,7 @@ function _Fun_DownPageJsonInfo()
     
 }
 //改写字典显示字段数据 keyName, keyCode
+//第二版进行优化,当第一次下载了字典数据后.分页第二次就不要再次去下载字典数据了.
 /*
 {
 "0":{"keyName":"男","keyCode":"1"},
