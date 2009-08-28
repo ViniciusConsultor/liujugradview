@@ -43,7 +43,7 @@ var _GVP_PageNum=1;
 //总共同有多少页
 var _GVP_AllPageNum=1;
 //每页显示的记录数
-var _GVP_ShowPageNum=4;
+var _GVP_ShowPageNum=10;
 
 
 //页面开始要运行的
@@ -318,6 +318,12 @@ function _Fun_DownPageJsonInfo()
     
 }
 //改写字典显示字段数据 keyName, keyCode
+/*
+{
+"0":{"keyName":"男","keyCode":"1"},
+"1":{"keyName":"女","keyCode":"0"}
+}
+*/
 function _Fun_ChangeKeyColumnInfo()
 {
     //是字典的字段字条串
@@ -508,16 +514,7 @@ function CheckBoxSelectStr()
     selectStr=selectStr.substring(0,selectStr.length-1);
     return selectStr;
 }
-//编辑
-function _Fun_T_Table_edit_click(tableName,tablePK,keyVal)
-{
-    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
-}
-//删除
-function _Fun_T_Table_del_click(tableName,tablePK,keyVal)
-{
-    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
-}
+
 
 //分页导航
 
@@ -609,6 +606,12 @@ function _Fun_AutoNumPage()
     }
     $("#S_show_page_showPageNum_strong").html(A_htmlStr);
 }
+//控件导航的数据和下拉显示
+function _Fun_S_show_page_div_NumChange()
+{
+    $("#S_show_page_PageNum_a").text(_GVP_PageNum);
+    $("#S_show_page_goToPage_select").val(_GVP_PageNum);
+}
 </script>
 <script language="javascript" type="text/javascript">
 //查看选择结果
@@ -616,16 +619,20 @@ function showCheckBoxSelect()
 {
     alert(CheckBoxSelectStr());
 }
+//编辑
+function _Fun_T_Table_edit_click(tableName,tablePK,keyVal)
+{
+    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+}
+//删除
+function _Fun_T_Table_del_click(tableName,tablePK,keyVal)
+{
+    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+}
 //自定义操作
 function _Fun_T_Table_autoCoulmn_click(tableName,tablePK,keyVal)
 {
     alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
-}
-//控件导航的数据和下拉显示
-function _Fun_S_show_page_div_NumChange()
-{
-    $("#S_show_page_PageNum_a").text(_GVP_PageNum);
-    $("#S_show_page_goToPage_select").val(_GVP_PageNum);
 }
 </script>
 
