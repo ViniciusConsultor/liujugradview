@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ShowGradView.ascx.cs" Inherits="GradView.WebApp.Controls.ShowGradView" %>
 <link id="S_TableStyleFile" href="../Style/Style1.css" rel="stylesheet" type="text/css" />
 <script src="../JavaScript/jquery.js" type="text/javascript"></script>
+<script src="../JavaScript/tablesorter.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 //表编号(在sys_tableConfig中表的编号)
 var _GV_tableID="<%= tableID %>";
@@ -56,6 +57,7 @@ $(document).ready(function(){
     _Fun_DownAllPageNum();
     //下载页数据
     _Fun_DownPageJsonInfo();
+    
     //加载排序JS和样式表文件
     _Fun_LoadTableSortAndStyleFile();
 });
@@ -64,19 +66,19 @@ $(document).ready(function(){
 //下载sys_tableConfig中的配置信息
 /*
 {
-"Customcolumnname":"详细",
-"Editstyle":"EditStyle1.css",
-"Ipxh":2,
-"Isallselect":"1",
-"Iscustomcolumn":"1",
-"Isdel":"1",
-"Isedit":"1",
-"Ispage":"1",
-"Issort":"1",
-"Showstyle":"style1.css",
-"Tableid":"9014b630-de80-42c8-b21b-ee8e8518ef22",
-"Tablename":"UserInfo",
-"Tablenamech":"学生信息表"
+"CustomColumnName":"详细",
+"EditStyle":"EditStyle1.css",
+"ShowStyle":"style1.css",
+"ipxh":2,
+"isAllSelect":"1",
+"isCustomColumn":"1",
+"isDel":"1",
+"isEdit":"1",
+"isPage":"1",
+"isSort":"1",
+"tableName":"UserInfo",
+"tableNameCh":"学生信息表",
+"tableid":"9014b630-de80-42c8-b21b-ee8e8518ef22"
 }
 */
 function _Fun_DownTableConfigJson()
@@ -90,22 +92,22 @@ function _Fun_DownTableConfigJson()
         success:function(data){
             _GV_tableConfigJson=data;
             //把表名赋值
-            _GVS_TableNameStr=_GV_tableConfigJson.Tablename;
+            _GVS_TableNameStr=_GV_tableConfigJson.tableName;
         }
     });
 }
 //加载表格排序JS脚本文件和样式表文件
 function _Fun_LoadTableSortAndStyleFile()
 {
-    if(_GV_tableConfigJson.Issort=="1")
+//    if(_GV_tableConfigJson.isSort=="1")
+//    {
+//        $.getScript("JavaScript/tablesorter.js",function(){
+//            _GV_LoadTableSorterIsTrue=true;
+//        });
+//    }
+    if(_GV_tableConfigJson.ShowStyle.length>4)
     {
-        $.getScript("JavaScript/tablesorter.js",function(){
-            _GV_LoadTableSorterIsTrue=true;
-        });
-    }
-    if(_GV_tableConfigJson.Showstyle.length>4)
-    {
-        var styleUrl="/Style/"+_GV_tableConfigJson.Showstyle;
+        var styleUrl="Style/"+_GV_tableConfigJson.ShowStyle;
         $("#S_TableStyleFile").attr("href",styleUrl);
     }
 }
@@ -271,7 +273,7 @@ function _Fun_DownAllPageNum()
 function _Fun_DownPageJsonInfo()
 {
     //是否分页
-    if(_GV_tableConfigJson.Ispage=="1")
+    if(_GV_tableConfigJson.isPage=="1")
     {
         $.ajax({
             url:_GV_PostPage,
@@ -380,21 +382,21 @@ function _Fun_BindPageTable()
     var B_tableBodyArray=_GVS_FieldSNameStr.split(",");
     
     //表英文名称
-    var B_tableName=_GV_tableConfigJson.Tablename;
+    var B_tableName=_GV_tableConfigJson.tableName;
     //表中文名称
-    var B_tableNameCh=_GV_tableConfigJson.Tablenamech;
+    var B_tableNameCh=_GV_tableConfigJson.tableNameCh;
     //表简写主键
     var B_tableSPK=_GVS_TableSPKStr;
     //是否可以全选
-    var B_isAllSelect=_GV_tableConfigJson.Isallselect=="1"?true:false;
+    var B_isAllSelect=_GV_tableConfigJson.isAllSelect=="1"?true:false;
     //是否可以编辑
-    var B_isEdit=_GV_tableConfigJson.Isedit=="1"?true:false;
+    var B_isEdit=_GV_tableConfigJson.isEdit=="1"?true:false;
     //是否删除
-    var B_isDel=_GV_tableConfigJson.Isdel=="1"?true:false;
+    var B_isDel=_GV_tableConfigJson.isDel=="1"?true:false;
     //是否可以自定义列
-    var B_isAutoColumn=_GV_tableConfigJson.Iscustomcolumn=="1"?true:false;
+    var B_isAutoColumn=_GV_tableConfigJson.isCustomColumn=="1"?true:false;
     //自定义列名
-    var B_AutoColumnName=_GV_tableConfigJson.Customcolumnname;
+    var B_AutoColumnName=_GV_tableConfigJson.CustomColumnName;
     
     //表开始
     var B_htmlStr="<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" id=\"T_Table\">";
@@ -491,6 +493,18 @@ function _Fun_BindPageTable()
     
     //控制导航的数字显示
     _Fun_S_show_page_div_NumChange();
+    
+    //绑定排序
+    if(_GV_tableConfigJson.isSort=="1")
+    {
+        if(B_isAllSelect)
+        {
+            $("#T_Table").tablesorter({headers:{0:{sorter:false}}});
+        }else
+        {
+            $("#T_Table").tablesorter();
+        }
+    }
 }
 
 //点击全选checkbox
