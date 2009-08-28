@@ -17,7 +17,21 @@ namespace GradView.WebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!Page.IsPostBack)
+            {
+                if (Request.QueryString["tableID"] != null)
+                {
+                    SGV.tableID = Request.QueryString["tableID"].ToString();
+                }
+                else if (Request.Form["tableID"] != null)
+                {
+                    SGV.tableID = Request.Form["tableID"].ToString();
+                }
+                else
+                {
+                    SGV.tableID = "9014b630-de80-42c8-b21b-ee8e8518ef22";
+                }
+            }
         }
     }
 }
