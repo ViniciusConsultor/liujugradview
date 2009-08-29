@@ -4,42 +4,32 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>无标题页</title>
-    <style type="text/css">
-        .style1
-        {
-            width: 100%;
-        }
-    </style>
+<title>无标题页</title>
+<script src="JavaScript/jquery.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+function CSUpload()
+{
+    var jsonStr="{";
+    $("#from_div input[type='text']").each(function(){
+        jsonStr+="\""+$(this).attr("name")+"\":\""+$(this).val()+"\","
+    });
+    jsonStr=jsonStr.substring(0,jsonStr.length-1)+"}";
+    
+    $.post("AjaxPages/AjaxMsSql.ashx",{_type:"e_insertObj",ClassName:"key_sex",ClassData:jsonStr},function(data){
+        
+    });
+    
+}
+</script>
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-        <table class="style1">
-            <thead>
-                <tr>
-                    <th title="排序">a
-                    </th>
-                    <th>b
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <a href="javascript:;">h</a></td>
-                <td>
-                    &nbsp;</td>
-            </tr>
-            <tr>
-                <td>
-                    &nbsp;</td>
-                <td>
-                    &nbsp;</td>
-            </tr>
-            </tbody>
-        </table>
-    
+    <div id="from_div">
+        keyID:<input type="text" name="keyID" value="<%= newGuid %>" /><br />
+        keyName:<input type="text" name="keyName" /><br />
+        keyCode<input type="text" name="keyCode" /><br />
+        keyInfo<input type="text" name="keyInfo" /><br />
+        <input type="button" value="提交" onclick="CSUpload()" />
     </div>
     </form>
 </body>
