@@ -111,6 +111,13 @@
     <Compile Include="CS.aspx.designer.cs">
       <DependentUpon>CS.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EditHtmlShow.aspx.cs">
+      <DependentUpon>EditHtmlShow.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditHtmlShow.aspx.designer.cs">
+      <DependentUpon>EditHtmlShow.aspx</DependentUpon>
+    </Compile>
     <Compile Include="EditPage.aspx.cs">
       <DependentUpon>EditPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -159,8 +166,10 @@
   <ItemGroup>
     <Content Include="AjaxPages\AjaxOracle.ashx" />
     <Content Include="CS.aspx" />
+    <Content Include="EditHtmlShow.aspx" />
     <Content Include="EditPage.aspx" />
     <Content Include="ShowPage.aspx" />
+    <Content Include="Style\EStyle1.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
