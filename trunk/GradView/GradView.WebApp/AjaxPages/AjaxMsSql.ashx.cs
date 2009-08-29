@@ -37,10 +37,28 @@ namespace GradView.WebApp.AjaxPages
                     case "s_DownAllPageNum": Send_AllPageNum(context); break;
                     case "s_downPageInfo": Send_PageInfoJson(context); break;
                     case "s_downKeyTableInfo": Send_KeyTableInfoJson(context); break;
+                    case "e_downFieldConfig": E_Send_sysFieldConfig(context); break;
                     case "e_insertObj": InsertObj(context); break;
                     default: break;
                 }
             }
+        }
+
+        /// <summary>
+        /// 发送编辑控件的sys_filedConfig信息到编辑页面
+        /// </summary>
+        /// <param name="context"></param>
+        private void E_Send_sysFieldConfig(HttpContext context)
+        {
+            string tableID = context.Request.Form["tableID"].ToString();
+            string sqlStr = "SELECT fieldName,fieldNameCh,isPK,isIntType,isFK,FKTableName,FKTablePK,FKTableField,regexTypeID,editTypeID,regrxText,keyTableID,isEdit,EditMinLength,EditMaxLength,isMust FROM sys_FieldConfig WHERE (tableid=@tableid) ORDER BY EditSort";
+            SqlParameter[] sp = {
+                                    new SqlParameter("@tableid", SqlDbType.VarChar, 40)
+                                };
+            sp[0].Value = tableID;
+            DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, sp);
+            string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
+            context.Response.Write(resStr);
         }
 
         /// <summary>

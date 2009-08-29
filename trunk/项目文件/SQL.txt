@@ -70,3 +70,11 @@ FROM         UserInfo INNER JOIN
                       GradeInfo ON UserInfo.njid = GradeInfo.njid INNER JOIN
                       ClassInfo ON UserInfo.bjid = ClassInfo.bjid
 WHERE     (1 = 1)
+
+20090829
+
+SELECT     fieldName, fieldNameCh, isPK, isIntType, isFK, FKTableName, FKTablePK, FKTableField, regexTypeID, editTypeID, regrxText, keyTableID, isEdit, 
+                      EditMinLength, EditMaxLength, isMust
+FROM         sys_FieldConfig
+WHERE     (tableid = '9014b630-de80-42c8-b21b-ee8e8518ef22')
+ORDER BY EditSort
