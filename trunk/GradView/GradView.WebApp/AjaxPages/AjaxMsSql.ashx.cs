@@ -7,9 +7,13 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using System.Data.SqlClient;
+using System.Reflection;
 using GradView.Library.Data;
 using GradView.Library.Utility;
 using GradView.WebApp.App_Code;
+using System.Runtime.Serialization.Json;
+using System.IO;
+using System.Text;
 
 namespace GradView.WebApp.AjaxPages
 {
@@ -33,10 +37,65 @@ namespace GradView.WebApp.AjaxPages
                     case "s_DownAllPageNum": Send_AllPageNum(context); break;
                     case "s_downPageInfo": Send_PageInfoJson(context); break;
                     case "s_downKeyTableInfo": Send_KeyTableInfoJson(context); break;
+                    case "e_insertObj": InsertObj(context); break;
                     default: break;
                 }
             }
         }
+
+        /// <summary>
+        /// 插入一个实体对像到数据库
+        /// </summary>
+        /// <param name="context"></param>
+        private void InsertObj(HttpContext context)
+        {
+            string ClassName = context.Request.Form["ClassName"].ToString();
+            string ClassData = context.Request.Form["ClassData"].ToString();
+            string[] ClassNameArray = ClassName.Split('_');
+            string CNStr = "";
+            for (int i = 0; i < ClassNameArray.Length; i++)
+            {
+                CNStr += ClassNameArray[i].Substring(0, 1).ToUpper() + ClassNameArray[i].Substring(1).ToLower();
+            }
+            ClassName = CNStr;
+
+            //反射实体
+            Assembly Ab = Assembly.Load("GradView.Library");
+            Type type = Ab.GetType("GradView.Library.Data." + ClassName, true, false);
+            object obj = Activator.CreateInstance(type);
+            DataContractJsonSerializer dcjs = new DataContractJsonSerializer(type);
+            MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(ClassData));
+            obj = dcjs.ReadObject(ms);
+
+            //反射业务操作
+            string opName = "Biz" + ClassName;
+            string opMethod = "Insert";
+            Type opType = Ab.GetType("GradView.Library.Data." + opName, true, false);
+            object opObj = Activator.CreateInstance(opType);
+            MethodInfo[] mi = opType.GetMethods();
+            for (int i = 0; i < mi.Length; i++)
+            {
+                if (mi[i].Name == opMethod)
+                {
+                    object[] par = { 
+                                       obj
+                                   };
+                    try
+                    {
+                        mi[i].Invoke(opObj, par);
+                        break;
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            //Object[] par = { 
+            //                   obj
+            //               };
+            //mi.Invoke(opObj, par);
+        }
+
 
         /// <summary>
         /// 下载字典信息到前台
