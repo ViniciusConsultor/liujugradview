@@ -37,38 +37,28 @@ namespace GradView.WebApp.AjaxPages
                     case "s_DownAllPageNum": Send_AllPageNum(context); break;
                     case "s_downPageInfo": Send_PageInfoJson(context); break;
                     case "s_downKeyTableInfo": Send_KeyTableInfoJson(context); break;
+
                     case "e_downFieldConfig": E_Send_sysFieldConfig(context); break;
-                    case "e_insertObj": InsertObj(context); break;
+                    case "e_downFKTableField": E_Send_FKTableFieldJson(context); break;
+                    case "e_downRegex": E_Send_RegexStr(context); break;
+                    case "e_upFile": E_UpLoadFile(context); break;
+                    case "e_DownEditInfo": E_SendEditInfo(context); break;
+                    case "e_InsAndUpdObj": InsertAndUpdateObj(context); break;
                     default: break;
                 }
             }
         }
 
         /// <summary>
-        /// 发送编辑控件的sys_filedConfig信息到编辑页面
+        /// 插入/修改一个实体对像到数据库
         /// </summary>
         /// <param name="context"></param>
-        private void E_Send_sysFieldConfig(HttpContext context)
-        {
-            string tableID = context.Request.Form["tableID"].ToString();
-            string sqlStr = "SELECT fieldName,fieldNameCh,isPK,isIntType,isFK,FKTableName,FKTablePK,FKTableField,regexTypeID,editTypeID,regrxText,keyTableID,isEdit,EditMinLength,EditMaxLength,isMust FROM sys_FieldConfig WHERE (tableid=@tableid) ORDER BY EditSort";
-            SqlParameter[] sp = {
-                                    new SqlParameter("@tableid", SqlDbType.VarChar, 40)
-                                };
-            sp[0].Value = tableID;
-            DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, sp);
-            string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
-            context.Response.Write(resStr);
-        }
-
-        /// <summary>
-        /// 插入一个实体对像到数据库
-        /// </summary>
-        /// <param name="context"></param>
-        private void InsertObj(HttpContext context)
+        private void InsertAndUpdateObj(HttpContext context)
         {
             string ClassName = context.Request.Form["ClassName"].ToString();
             string ClassData = context.Request.Form["ClassData"].ToString();
+            string IntOrUpd = context.Request.Form["isIns"].ToString();
+
             string[] ClassNameArray = ClassName.Split('_');
             string CNStr = "";
             for (int i = 0; i < ClassNameArray.Length; i++)
@@ -88,6 +78,10 @@ namespace GradView.WebApp.AjaxPages
             //反射业务操作
             string opName = "Biz" + ClassName;
             string opMethod = "Insert";
+            if (IntOrUpd != "1")
+            {
+                opMethod = "Update";
+            }
             Type opType = Ab.GetType("GradView.Library.Data." + opName, true, false);
             object opObj = Activator.CreateInstance(opType);
             MethodInfo[] mi = opType.GetMethods();
@@ -108,12 +102,95 @@ namespace GradView.WebApp.AjaxPages
                     }
                 }
             }
-            //Object[] par = { 
-            //                   obj
-            //               };
-            //mi.Invoke(opObj, par);
+            context.Response.Write("true");
         }
 
+        /// <summary>
+        /// 发送要编辑的实体信息到前台
+        /// </summary>
+        /// <param name="context"></param>
+        private void E_SendEditInfo(HttpContext context)
+        {
+            string tableName = context.Request.Form["table"].ToString();
+            string tablePK = context.Request.Form["pk"].ToString();
+            string PKVal = context.Request.Form["pkVal"].ToString();
+            string PKisInt = context.Request.Form["pInt"].ToString();
+            string sqlStr = "SELECT * FROM " + tableName + " WHERE " + tablePK + "=";
+            if (PKisInt == "0")
+            {
+                sqlStr += "'" + PKVal + "'";
+            }
+            else
+            {
+                sqlStr += PKVal;
+            }
+            DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, new SqlParameter[] { });
+            string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
+            context.Response.Write(resStr);
+        }
+
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="context"></param>
+        private void E_UpLoadFile(HttpContext context)
+        {
+            string strFileName = Path.GetFileName(context.Request.Files[0].FileName);
+            string strExtension = Path.GetExtension(context.Request.Files[0].FileName).ToLower();
+            DateTime dt = DateTime.Now;
+            string newFileName = dt.Year.ToString() + dt.Month.ToString() + dt.Day.ToString() + dt.Hour.ToString() + dt.Minute.ToString() + dt.Second.ToString() + dt.Millisecond.ToString() + new Random().Next(1, 1000).ToString() + strExtension;
+            string strSaveLocation = context.Server.MapPath("..\\UpLoad\\") + newFileName;
+            context.Request.Files[0].SaveAs(strSaveLocation);
+            context.Response.Write(newFileName);
+        }
+
+        /// <summary>
+        /// 下载验证的正则表达式
+        /// </summary>
+        /// <param name="context"></param>
+        private void E_Send_RegexStr(HttpContext context)
+        {
+            string regexName = context.Request.Form["regexName"].ToString();
+            string sqlStr = "SELECT keyCode from key_regexType where keyName=@keyName";
+            SqlParameter[] sp = {
+                                    new SqlParameter("@keyName", SqlDbType.VarChar, 100)
+                                };
+            sp[0].Value = regexName;
+            string resStr = SqlHelper.ExecuteScalar(sqlStr, sp).ToString();
+            context.Response.Write(resStr);
+        }
+
+        /// <summary>
+        /// 下载外键表相对的主键和要下载的字段信息
+        /// </summary>
+        /// <param name="context"></param>
+        private void E_Send_FKTableFieldJson(HttpContext context)
+        {
+            string FKtableName = context.Request.Form["table"].ToString();
+            string FKtablePK = context.Request.Form["PK"].ToString();
+            string FKtableField = context.Request.Form["field"].ToString();
+            string sqlStr = "SELECT " + FKtablePK + " AS FVal," + FKtableField + " AS FText FROM " + FKtableName;
+            DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, new SqlParameter[] { });
+            string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
+            context.Response.Write(resStr);
+        }
+
+        /// <summary>
+        /// 发送编辑控件的sys_filedConfig信息到编辑页面
+        /// </summary>
+        /// <param name="context"></param>
+        private void E_Send_sysFieldConfig(HttpContext context)
+        {
+            string tableID = context.Request.Form["tableID"].ToString();
+            string sqlStr = "SELECT fieldName,fieldNameCh,isPK,isIntType,isFK,FKTableName,FKTablePK,FKTableField,regexTypeID,editTypeID,regrxText,keyTableID,isEdit,EditMinLength,EditMaxLength,isMust FROM sys_FieldConfig WHERE (tableid=@tableid) ORDER BY EditSort";
+            SqlParameter[] sp = {
+                                    new SqlParameter("@tableid", SqlDbType.VarChar, 40)
+                                };
+            sp[0].Value = tableID;
+            DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, sp);
+            string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
+            context.Response.Write(resStr);
+        }
 
         /// <summary>
         /// 下载字典信息到前台

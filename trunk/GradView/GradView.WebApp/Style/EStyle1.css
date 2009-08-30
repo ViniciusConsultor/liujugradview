@@ -8,13 +8,23 @@
     text-align:center;
 }
 
+#E_edit_end_div{
+    text-align:center;
+}
+
 .E_Table_tr{}
 .E_Table_tr_oneTd{}
 .E_Table_tr_twoTd{}
-.E_Table_tr_thrTd{}
+.E_Table_tr_thrTd{
+    color:Gray;
+}
 
-.E_Table_tr_thrTd_true{}
-.E_Table_tr_thrTd_false{}
+.E_Table_tr_thrTd_true{
+    color:Blue;
+}
+.E_Table_tr_thrTd_false{
+    color:Red;
+}
 
 .E_Table_input_text{}
 .E_Table_input_text_file{}

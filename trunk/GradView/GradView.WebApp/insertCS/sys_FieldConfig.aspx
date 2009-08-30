@@ -302,8 +302,8 @@
                 <asp:BoundField DataField="xsid" HeaderText="学生编号" ReadOnly="True" 
                     SortExpression="xsid" />
                 <asp:BoundField DataField="tableid" HeaderText="表编号" SortExpression="tableid" />
-                <asp:BoundField DataField="fieleName" HeaderText="字段英文" 
-                    SortExpression="fieleName" />
+                <asp:BoundField DataField="fieldName" HeaderText="字段英文" 
+                    SortExpression="fieldName" />
                 <asp:BoundField DataField="fieldNameCh" HeaderText="字段中文" 
                     SortExpression="fieldNameCh" />
                 <asp:BoundField DataField="ShowMaxLength" HeaderText="最大显示" 

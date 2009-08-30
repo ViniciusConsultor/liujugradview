@@ -167,6 +167,20 @@
     <Content Include="CS.aspx" />
     <Content Include="EditHtmlShow.aspx" />
     <Content Include="EditPage.aspx" />
+    <Content Include="JavaScript\My97DatePicker\calendar.js" />
+    <Content Include="JavaScript\My97DatePicker\config.js" />
+    <Content Include="JavaScript\My97DatePicker\lang\en.js" />
+    <Content Include="JavaScript\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="JavaScript\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="JavaScript\My97DatePicker\My97DatePicker.htm" />
+    <Content Include="JavaScript\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="JavaScript\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="JavaScript\My97DatePicker\skin\default\img.gif" />
+    <Content Include="JavaScript\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="JavaScript\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="JavaScript\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="JavaScript\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="JavaScript\My97DatePicker\WdatePicker.js" />
     <Content Include="ShowPage.aspx" />
     <Content Include="Style\EStyle1.css" />
   </ItemGroup>
