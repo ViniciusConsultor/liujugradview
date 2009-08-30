@@ -12,7 +12,7 @@
     <form id="form1" runat="server">
     <div>
     
-        <uc1:EditGradView ID="EditGradView1" runat="server" />
+        <uc1:EditGradView ID="EGV" runat="server" />
     
     </div>
     </form>

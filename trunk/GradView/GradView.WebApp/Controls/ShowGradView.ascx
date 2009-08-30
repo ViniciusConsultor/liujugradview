@@ -637,7 +637,9 @@ function showCheckBoxSelect()
 //编辑
 function _Fun_T_Table_edit_click(tableName,tablePK,keyVal)
 {
-    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+    //alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+    var urlStr="EditPage.aspx?tableID="+_GV_tableID+"&EditID="+keyVal;
+    location.href=urlStr;
 }
 //删除
 function _Fun_T_Table_del_click(tableName,tablePK,keyVal)
@@ -649,6 +651,12 @@ function _Fun_T_Table_autoCoulmn_click(tableName,tablePK,keyVal)
 {
     alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
 }
+//增加信息
+function _Fun_AddRow()
+{
+    var urlStr="EditPage.aspx?tableID="+_GV_tableID;
+    location.href=urlStr;
+}
 </script>
 
 <div>
@@ -656,6 +664,7 @@ function _Fun_T_Table_autoCoulmn_click(tableName,tablePK,keyVal)
         <%--功能操作区--%>
         <div id="S_click_div">
             <input type="button" value="查看选择结果" onclick="showCheckBoxSelect()" />
+            <input type="button" value="增加记录" onclick="_Fun_AddRow()" />
         </div>
         
         <%--查询控件区--%>
