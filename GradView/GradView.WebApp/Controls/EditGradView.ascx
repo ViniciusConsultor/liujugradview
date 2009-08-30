@@ -5,18 +5,18 @@
 <script src="../JavaScript/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 //post请求时的页
-var _EGV_PostPage="AjaxPages/AjaxMsSql.ashx";
+var _EGV_PostPage="<%= PostPage %>";
 //表编号
-var _EGV_TableID="9014b630-de80-42c8-b21b-ee8e8518ef22";
+var _EGV_TableID="<%= tableID %>";
 //sys_tableConfig中的配置信息
 var _EGV_TableConfigJson=new Array();
 //sys_fieldConfig中关于编辑控件定义的信息
 var _EGV_FieldConfigJson=new Array();
 
 //是否增加
-var _EGV_isAdd=false;
+var _EGV_isAdd="<%= isAdd %>"=="True"?true:false;
 //要修改的编号
-var _EGV_updateID="08a6b158-ac98-403c-88c2-48af0babd6f1";
+var _EGV_updateID="<%= EditID %>";
 //要增加的编号
 var _EGV_addID="<%= Guid.NewGuid().ToString() %>";
 //要编辑的信息
