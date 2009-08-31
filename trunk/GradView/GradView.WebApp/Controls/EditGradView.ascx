@@ -430,7 +430,7 @@ function _FunE_btn_send_ok()
             </div>
             <%--表单结束区--%>
             <div id="E_edit_end_div">
-                <input type="button" value="提交" onclick="_FunE_btn_send_ok()" />
+                <input type="button" value="提交" onclick="_FunE_btn_send_ok()" class="E_Table_input_button_file" />
             </div>
         </div>
     </div>
