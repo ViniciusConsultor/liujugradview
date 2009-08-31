@@ -1,0 +1,124 @@
+1.获取所有用户名:
+SELECT name FROM Sysusers where status='2' and islogin='1'
+islogin='1'表示帐户
+islogin='0'表示角色
+status='2'表示用户帐户
+status='0'表示糸统帐户
+2.获取所有数据库名:
+SELECT Name FROM Master..SysDatabases ORDER BY Name
+3.获取所有表名
+SELECT Name FROM DatabaseName..SysObjects Where XType='U' ORDER BY Name
+XType='U':表示所有用户表;
+XType='S':表示所有系统表;
+4.获取所有字段名:
+SELECT Name FROM SysColumns WHERE id=Object_Id('TableName')
+5.获取数据库所有类型
+select name from systypes 
+6.获取主键字段
+SELECT   name FROM SysColumns WHERE id=Object_Id('表名') and colid=(select top 1 keyno from sysindexkeys where id=Object_Id('表名'))
+
+7、获取字段类型
+
+select a.name as [column],b.name as type from syscolumns a,systypes b where a.id=object_id('表名') and a.xtype=b.xtype
+或者可以通过存储过程
+exec sp_help 表名
+
+8、取表结构
+
+select column_name,data_type,character_maximum_length from information_schema.columns where table_name = '表名'
+
+
+
+
+/****************************************************************************************************************************/
+
+/*--获取连接SQL服务器的信息 
+
+所有连接本机的:操作的数据库名,计算机名,用户名,网卡物理地址,IP地址,程序名 
+
+--邹建 2003.11(引用请保留此信息)--*/ 
+
+/*--调用示例 
+--显示所有本机的连接信息 
+exec p_getlinkinfo 
+
+--显示所有本机的连接信息,包含ip地址 
+exec p_getlinkinfo @includeip=1 
+
+--显示连接指定数据库的信息 
+exec p_getlinkinfo '客户资料' 
+--*/ 
+create proc p_getlinkinfo 
+@dbname sysname=null, --要查询的数据库名,默认查询所有数据库的连接信息 
+@includeip bit=0 --是否显示IP地址,因为查询IP地址比较费时,所以增加此控制 
+as 
+declare @dbid int 
+set @dbid=db_id(@dbname) 
+
+create table #tb(id int identity(1,1),dbname sysname,hostname nchar(128),loginname nchar(128),net_address nchar(12),net_ip nvarchar(15),prog_name nchar(128)) 
+insert into #tb(hostname,dbname,net_address,loginname,prog_name) 
+select distinct hostname,db_name(dbid),net_address,loginame,program_name from master..sysprocesses 
+where hostname<>'' and (@dbid is null or dbid=@dbid) 
+
+if @includeip=0 goto lb_show --如果不显示IP地址,就直接显示 
+
+declare @sql varchar(500),@hostname nchar(128),@id int 
+create table #ip(hostname nchar(128),a varchar(200)) 
+declare tb cursor local for select distinct hostname from #tb 
+open tb 
+fetch next from tb into @hostname 
+while @@fetch_status=0 
+begin 
+set @sql='ping '+@hostname+' -a -n 1 -l 1' 
+insert #ip(a) exec master..xp_cmdshell @sql 
+update #ip set hostname=@hostname where hostname is null 
+fetch next from tb into @hostname 
+end 
+
+update #tb set net_ip=left(a,patindex('%:%',a)-1) 
+from #tb a inner join ( 
+select hostname,a=substring(a,patindex('Ping statistics for %:%',a)+20,20) from #ip 
+where a like 'Ping statistics for %:%') b on a.hostname=b.hostname 
+
+lb_show: 
+select   id,dbname as '数据库名',hostname as '客户机名',loginname as '用户名'   
+,net_address as '网卡物理地址',net_ip as 'IP地址',prog_name as '应用程序名称'   from   #tb 
+
+go  
+
+
+SELECT     class, class_desc, major_id, minor_id, name, value
+FROM         sys.extended_properties
+
+SELECT     name, id, xtype, uid, info, status, base_schema_ver, replinfo, parent_obj, crdate, ftcatid, schema_ver, stats_schema_ver, type, userstat, sysstat, 
+                      indexdel, refdate, version, deltrig, instrig, updtrig, seltrig, category, cache
+FROM         sys.sysobjects
+WHERE     (xtype = 'U')
+
+
+SELECT     a.name, a.id,b.value
+FROM         sys.sysobjects as a inner join sys.extended_properties as b on a.id=b.major_id
+WHERE     (xtype = 'U') AND (name = 'key_editType')
+
+SELECT     class, class_desc, major_id, minor_id, name, value
+FROM         sys.extended_properties
+WHERE     (major_id = 1621580815)
+
+SELECT     objtype, objname, name, value
+FROM         ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', DEFAULT, DEFAULT) AS fn_listextendedproperty_1
+
+
+SELECT     objname, value
+FROM         ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', DEFAULT, DEFAULT, DEFAULT)
+ORDER BY objname
+
+SELECT COLUMN_NAME FROM information_schema.columns WHERE TABLE_NAME='" + tableName + "' ORDER BY COLUMN_NAME
+
+SELECT     COLUMN_NAME
+FROM         INFORMATION_SCHEMA.COLUMNS
+WHERE     (TABLE_NAME = 'sys_FieldConfig')
+ORDER BY COLUMN_NAME
+
+SELECT     objname, value
+FROM         ::fn_listextendedproperty('MS_Description', 'schema', 'dbo', 'table', 'sys_FieldConfig', 'column', DEFAULT) AS fn_listextendedproperty_1
+ORDER BY objname
