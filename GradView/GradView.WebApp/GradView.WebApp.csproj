@@ -167,6 +167,10 @@
     <Content Include="CS.aspx" />
     <Content Include="EditHtmlShow.aspx" />
     <Content Include="EditPage.aspx" />
+    <Content Include="Images\but-bg.gif" />
+    <Content Include="Images\icon-01.gif" />
+    <Content Include="Images\icon-02.gif" />
+    <Content Include="Images\icon-03.gif" />
     <Content Include="JavaScript\My97DatePicker\calendar.js" />
     <Content Include="JavaScript\My97DatePicker\config.js" />
     <Content Include="JavaScript\My97DatePicker\lang\en.js" />
@@ -186,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Images\" />
     <Folder Include="UpLoad\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
