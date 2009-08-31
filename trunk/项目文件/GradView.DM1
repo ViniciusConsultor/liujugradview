@@ -31,7 +31,7 @@ VersionId,Version_ID,Copyright,Global_User_ID,Row_Time_Stamp
 
 Diagram
 DiagramId,Version_ID,VersionId,LastUpdate,CreateDate,ActiveModel,ActiveSubmodel,VSplitterPosition,X,Y,Width,Height,DiagramNameId,AuthorId,CompanyId,VersionNoId,CopyrightStringId,DefinitionId,UnificationOptionId,FileNameId,CopyrightYearStringId,DiagramName,CodePage,SignatureGUID,ReleaseName,Flags,Global_User_ID,Row_Time_Stamp
-1,1,800,08/30/2009 20:50:53G,08/24/2009 08:53:10G,1,1,180,0,0,0,0,111,112,113,114,113,0,115,194,0,Model1.DM1,936,NULL,NULL,0,1,0
+1,1,800,08/31/2009 14:59:16G,08/24/2009 08:53:10G,1,1,180,0,0,0,0,111,112,113,114,113,0,115,194,0,Model1.DM1,936,NULL,NULL,0,1,0
 
 Model
 DiagramId,ModelId,Model_ID,ModelType,PlatformId,NamePrefix,SpaceHandling,CaseHandling,GenPrimaryKey,GenAlternateKey,GenInversionEntry,GenForeignKey,Notation,ModelNameId,RowOverhead,TableOverhead,IndexOverhead,BlobOverhead,BlobBlockSize,Global_User_ID,Row_Time_Stamp
@@ -283,8 +283,8 @@ DiagramId,ModelId,SubmodelId,PropertyId,ColorDefault_ID,ColorProperty_ID,Submode
 
 Entity
 DiagramId,ModelId,EntityId,Entity_ID,Model_ID,EntityNameId,TableNameId,DefinitionId,NoteId,OwnerId,EntityTypeId,Flags,DataWhseSettings,NSTFlag,CompareFlags,PhysicalCompareFlags,Global_User_ID,Row_Time_Stamp
-1,1,1,1,1,6,225,6,0,0,0,0,0,0,0,0,116,0
-1,1,2,2,1,8,224,8,0,0,0,0,0,0,0,0,117,0
+1,1,1,1,1,275,225,275,0,0,0,0,0,0,0,0,116,0
+1,1,2,2,1,276,224,276,0,0,0,0,0,0,0,0,117,0
 1,1,4,4,1,13,14,13,0,0,0,0,0,0,0,0,119,0
 1,1,5,5,1,15,16,15,0,0,0,0,0,0,0,0,120,0
 1,1,7,7,1,117,228,117,0,0,0,0,0,0,0,0,231,0
@@ -515,10 +515,10 @@ Submodel_SchemaObj_Link_ID,Submodel_ID,MetaTable_ID,Table_Row_ID,cxNode,cyNode,x
 
 RelationshipDisplay
 DiagramId,ModelId,SubmodelId,RelationshipId,RelationshipDisplay_ID,ForeignKey_ID,Submodel_ID,ElbowPosition,DisplayVerbs,DisplayCardinality,PhysicalEntityId,VerbOffsetX,VerbOffsetY,InverseVerbOffsetX,InverseVerbOffsetY,DesiredRoutingStyle,ParentConnectorFlags,ParentConnectorOffsetX,ParentConnectorOffsetY,ParentConnectorPerMils,ChildConnectorFlags,ChildConnectorOffsetX,ChildConnectorOffsetY,ChildConnectorPerMils,cxName,cyName,cxLogicalName,cyLogicalName,cxVerbPhrase,cyVerbPhrase,cxInverseVerbPhrase,cyInverseVerbPhrase,NameOffsetX,NameOffsetY,LogicalNameOffsetX,LogicalNameOffsetY,NameOrientation,LogicalNameOrientation,VerbPhraseOrientation,InverseVerbPhraseOrientation,Global_User_ID,Row_Time_Stamp
-1,1,1,1,2,1,1,5000,N,N,0,0,0,0,0,3,0,68,68,0,0,-85,165,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,212,0
+1,1,1,1,2,1,1,5000,N,N,0,0,0,0,0,3,0,89,68,0,0,-88,165,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,212,0
 1,1,1,6,11,6,1,5000,N,N,0,0,0,0,0,3,0,-57,0,0,0,63,-24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,271,0
 1,1,1,7,12,7,1,5000,N,N,0,0,0,0,0,3,0,-57,0,0,0,63,85,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,275,0
-1,1,1,8,25,20,1,5000,N,N,0,0,0,0,0,3,0,-67,0,0,0,86,-104,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1944,0
+1,1,1,8,25,20,1,5000,N,N,0,0,0,0,0,3,0,-67,0,0,0,89,-104,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1944,0
 
 Docking_Position
 Docking_Position_ID,View_Relationship_Display_ID,Child_View_Display_ID,Parent_View_Display_ID,RelationshipDisplay_ID,Parent_Entity_Display,Child_Entity_Display,Parent_Supertype_Display,Child_Supertype_Display,Supertype_Display_ID,Docking_Type,Global_User_ID,Row_Time_Stamp
@@ -567,25 +567,24 @@ Lineage_Stream_Display_ID,Lineage_Stream_ID,Submodel_ID,DesiredRoutingStyle,Pare
 SmallString
 String_Id,Data,Overflow,ConstantString,Row_Time_Stamp
 1,Main,0,0,0
-261,学历字典表,0,0,0
-2,Diagram specific data dictionary.,0,0,0
-3,Logical,0,0,0
-4,Main Model,0,0,0
 264,是否必要字段(在编辑控件的时候一定要输入),0,0,0
-5,Data Movement Rules,0,0,0
+2,Diagram specific data dictionary.,0,0,0
 265,是否必要字段,0,0,0
-6,显示控件配置表,0,0,0
+3,Logical,0,0,0
 266,isMust,0,0,0
-8,表配置信息,0,0,0
+4,Main Model,0,0,0
+5,Data Movement Rules,0,0,0
 268,fieldName,0,0,0
 269,是否排序,0,0,0
 270,isSort,0,0,0
 271,显示控件样式,0,0,0
 272,ShowStyle,0,0,0
-13,编辑类型字典表,0,0,0
 273,编辑控件样式,0,0,0
-14,key_editType,0,0,0
 274,EditStyle,0,0,0
+275,字段配置表(控件),0,0,0
+13,编辑类型字典表,0,0,0
+276,表配置信息(控件),0,0,0
+14,key_editType,0,0,0
 15,验证类型字典表,0,0,0
 16,key_regexType,0,0,0
 17,字典管理表,0,0,0
@@ -774,6 +773,7 @@ String_Id,Data,Overflow,ConstantString,Row_Time_Stamp
 252,在编辑控件中排序顺序,0,0,0
 253,编辑最小长度,0,0,0
 258,url,0,0,0
+261,学历字典表,0,0,0
 
 LargeString
 String_Id,Data,Row_Time_Stamp
@@ -1557,11 +1557,11 @@ StringUsage_Id,UniqueObject_Id,StringUsageType_Id,String_Id,Row_Time_Stamp
 477,679,62,25,0
 6,111,113,5,0
 478,679,13,28,0
-7,116,1,6,0
+7,116,1,275,0
 479,681,39,183,0
 8,116,2,225,0
-9,117,1,8,0
-10,117,3,8,0
+9,117,1,276,0
+10,117,3,276,0
 11,117,2,224,0
 15,119,1,13,0
 16,119,3,13,0
@@ -1822,7 +1822,7 @@ StringUsage_Id,UniqueObject_Id,StringUsageType_Id,String_Id,Row_Time_Stamp
 338,268,13,58,0
 339,276,13,159,0
 340,166,13,58,0
-342,116,3,6,0
+342,116,3,275,0
 343,165,13,240,0
 344,167,13,242,0
 345,168,13,37,0
@@ -2198,7 +2198,7 @@ Identity_Value_ID,Table_Name,Column_Name,Next_Valid_Value,Global_User_ID,Row_Tim
 14,Bound_Dictionary_Object,Bound_Dictionary_Object_ID,1,0,0
 15,CheckConstraints,CheckConstraints_ID,1,0,0
 16,Circular_Layout,Circular_Layout_ID,15,0,0
-17,ColorDefault,ColorDefault_ID,1071,0,0
+17,ColorDefault,ColorDefault_ID,1072,0,0
 18,Column_Usage,Column_Usage_ID,1,0,0
 19,Components_Layout,Components_Layout_ID,15,0,0
 20,Configuration_Option,Configuration_Option_ID,1,0,0
