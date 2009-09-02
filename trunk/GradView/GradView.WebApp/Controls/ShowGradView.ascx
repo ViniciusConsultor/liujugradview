@@ -466,7 +466,7 @@ function _Fun_BindPageTable()
         }
         
         //是否可以删除
-        if(B_isEdit)
+        if(B_isDel)
         {
             B_htmlStr+="<td><a href=\"javascript:;\" onclick=\"_Fun_T_Table_del_click('"+B_tableName+"','"+B_tableSPK+"','"+_GV_TableInfoJson[Ti][B_tableSPK]+"')\">删除</a></td>";
         }
