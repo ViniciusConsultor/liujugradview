@@ -627,6 +627,22 @@ function _Fun_S_show_page_div_NumChange()
     $("#S_show_page_PageNum_a").text(_GVP_PageNum);
     $("#S_show_page_goToPage_select").val(_GVP_PageNum);
 }
+//打印
+function _Fun_Btn_Click_print()
+{
+    var _html="<html><head>";
+    $("link").each(function(){
+        _html+="<link href=\""+$(this).attr("href")+"\" rel=\"stylesheet\" type=\"text/css\" />";
+    });
+    _html+="</head><body>";
+    _html+=$("#S_show_table_div").html();
+    _html+="</body></html>";
+    var newWin=window.open("","");
+    newWin.opener=null;
+    newWin.document.write(_html);
+    newWin.print();
+    newWin.document.close();
+}
 </script>
 <script language="javascript" type="text/javascript">
 //查看选择结果
@@ -644,7 +660,20 @@ function _Fun_T_Table_edit_click(tableName,tablePK,keyVal)
 //删除
 function _Fun_T_Table_del_click(tableName,tablePK,keyVal)
 {
-    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+    //alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+    var JsonData="{\""+tablePK+"\":\""+keyVal+"\"}";
+    if(confirm("您确定删除此数据吗?"))
+    {
+        $.post(_GV_PostPage,{_type:"e_InsAndUpdObj",ClassName:tableName,ClassData:JsonData,isIns:"2"},function(data){
+            if(data=="true")
+            {
+                location.href=location.href;
+            }else
+            {
+                alert("超时链接不成功");
+            }
+        });
+    }
 }
 //自定义操作
 function _Fun_T_Table_autoCoulmn_click(tableName,tablePK,keyVal)
@@ -665,6 +694,7 @@ function _Fun_AddRow()
         <div id="S_click_div">
             <input type="button" value="查看选择结果" onclick="showCheckBoxSelect()" />
             <input type="button" value="增加记录" onclick="_Fun_AddRow()" />
+            <input type="button" value="打印" onclick="_Fun_Btn_Click_print()" />
         </div>
         
         <%--查询控件区--%>

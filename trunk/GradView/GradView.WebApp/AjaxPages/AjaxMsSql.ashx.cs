@@ -78,6 +78,13 @@ namespace GradView.WebApp.AjaxPages
             //反射业务操作
             string opName = "Biz" + ClassName;
             string opMethod = "Insert";
+            switch (IntOrUpd)
+            {
+                case "0": opMethod = "Update"; break;
+                case "1": opMethod = "Insert"; break;
+                case "2": opMethod = "Delete"; break;
+                default: opMethod = "Insert"; break;
+            }
             if (IntOrUpd != "1")
             {
                 opMethod = "Update";
