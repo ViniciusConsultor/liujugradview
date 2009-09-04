@@ -40,6 +40,14 @@ namespace GradView.WebApp.Controls
             get;
             set;
         }
+        /// <summary>
+        /// 查询条件
+        /// </summary>
+        public string whereStr
+        {
+            get;
+            set;
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
