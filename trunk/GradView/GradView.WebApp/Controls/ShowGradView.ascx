@@ -708,18 +708,21 @@ function _Fun_AddRow()
     location.href=urlStr;
 }
 //绑定查询表单是否成功
-var _GV_BindSelectFromIsTrue=false;
+var _GV_BindSelectFromIsTrue=0;
 //点击查询的时候(加载表单)
 function _Fun_Btn_ShowSelect_click()
 {
-    if(!_GV_BindSelectFromIsTrue)
+    if(_GV_BindSelectFromIsTrue == 0)
     {
         //绑定表单
         _Fun_BindSelectHtml();
+    }else if(_GV_BindSelectFromIsTrue==1)
+    {
         $("#S_select_div").show();
     }else
     {
-        $("#S_select_div").show();
+        $("#S_select_div").hide();
+        alert("此表不支持查询");
     }
 }
 //绑定查询HTML代码
@@ -839,8 +842,15 @@ function _Fun_BindSelectHtml()
         }
         i++;
     }
+    if(_htmlSelect=="")
+    {
+        _GV_BindSelectFromIsTrue=2;
+        _Fun_Btn_ShowSelect_click();
+        return;
+    }
     $("#S_select_from_div").html(_htmlSelect);
-    _GV_BindSelectFromIsTrue=true;
+    _GV_BindSelectFromIsTrue=1;
+    _Fun_Btn_ShowSelect_click();
 }
 //查询
 function _Fun_Btn_select_OK_Click()
@@ -875,6 +885,11 @@ function _Fun_Btn_select_OK_Click()
     });
     _selelctWhere=_selelctWhere.substring(0,_selelctWhere.length-5);
     _GVS_WhereStr=_selelctWhere;
+    if(_selelctWhere=="")
+    {
+        alert("没有输入一个查询条件");
+        return;
+    }
     //把页数定向为1
     _GVP_PageNum=1;
     //下载页数
@@ -910,7 +925,8 @@ function _Fun_Btn_Cls_SelectWhere_click()
         <%--查询控件区--%>
         <div id="S_select_div" style="display:none">
             <%--表单显示区--%>
-            <div id="S_select_from_div"></div>
+            <div id="S_select_from_div">
+            </div>
             <%--按键提交区--%>
             <div id="S_select_btn_div">
                 <input type="button" value="查询" onclick="_Fun_Btn_select_OK_Click()" />
