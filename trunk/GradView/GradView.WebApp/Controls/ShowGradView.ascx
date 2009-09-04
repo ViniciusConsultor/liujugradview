@@ -675,8 +675,9 @@ function showCheckBoxSelect()
 function _Fun_T_Table_edit_click(tableName,tablePK,keyVal)
 {
     //alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
-    var urlStr="EditPage.aspx?tableID="+_GV_tableID+"&EditID="+keyVal;
-    location.href=urlStr;
+    //var urlStr="EditPage.aspx?tableID="+_GV_tableID+"&EditID="+keyVal;
+    //location.href=urlStr;
+    
 }
 //删除
 function _Fun_T_Table_del_click(tableName,tablePK,keyVal)
@@ -699,7 +700,24 @@ function _Fun_T_Table_del_click(tableName,tablePK,keyVal)
 //自定义操作
 function _Fun_T_Table_autoCoulmn_click(tableName,tablePK,keyVal)
 {
-    alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+    //alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
+    var tableInfo=new Object();
+    tableInfo.tableName=tableName;
+    tableInfo.tablePK=tablePK;
+    tableInfo.keyVal=keyVal;
+    
+    var rowInfo=new Object();
+    var i=0;
+    while(_GV_TableInfoJson[i]!=null)
+    {
+        if(_GV_TableInfoJson[i][tablePK]==keyVal)
+        {
+            rowInfo=_GV_TableInfoJson[i];
+            break;
+        }
+        i++;
+    }
+    UserFun_Custom(tableInfo,rowInfo);
 }
 //增加信息
 function _Fun_AddRow()
