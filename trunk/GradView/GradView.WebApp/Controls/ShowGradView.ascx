@@ -2,6 +2,7 @@
 <link id="S_TableStyleFile" href="../Style/Style1.css" rel="stylesheet" type="text/css" />
 <script src="../JavaScript/jquery.js" type="text/javascript"></script>
 <script src="../JavaScript/tablesorter.js" type="text/javascript"></script>
+<script src="../JavaScript/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 //表编号(在sys_tableConfig中表的编号)
 var _GV_tableID="<%= tableID %>";
@@ -31,6 +32,8 @@ var _GVS_FieldSNameStr="";
 var _GVS_FieldNameChStr="";
 //表from字段(INNER JOIN GradeInfo ON)
 var _GVS_From_TableAndJonnerStr="";
+//表单原始查询条件
+var _GVS_OldWhereStr="<%= whereStr %>";
 //表条件
 var _GVS_WhereStr="";
 //要下载字典的字段
@@ -113,19 +116,22 @@ function _Fun_LoadTableSortAndStyleFile()
 }
 //下载sys_FieldConfig中的配置信息
 /*
+fieldName,fieldNameCh,ShowMaxLength,isPK,isShow,isSelect,isIntType,isFK, FKTableName,FKTablePK,FKTableField,keyTableID,editTypeID
+*/
+/*
 {
-"0":{"fieldName":"xsid","fieldNameCh":"学生编号","ShowMaxLength":"40","isPK":"1","isShow":"0","isSelect":"0","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
-"1":{"fieldName":"njid","fieldNameCh":"年级","ShowMaxLength":"6","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"1","FKTableName":"GradeInfo","FKTablePK":"njid","FKTableField":"njmc","keyTableID":""},
-"2":{"fieldName":"bjid","fieldNameCh":"班级","ShowMaxLength":"6","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"1","FKTableName":"ClassInfo","FKTablePK":"bjid","FKTableField":"bjmc","keyTableID":""},
-"3":{"fieldName":"xh","fieldNameCh":"学号","ShowMaxLength":"9","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
-"4":{"fieldName":"mm","fieldNameCh":"密码","ShowMaxLength":"0","isPK":"0","isShow":"0","isSelect":"0","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
-"5":{"fieldName":"sfz","fieldNameCh":"身份证","ShowMaxLength":"18","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
-"6":{"fieldName":"csrq","fieldNameCh":"出身日期","ShowMaxLength":"10","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
-"7":{"fieldName":"dh","fieldNameCh":"电话","ShowMaxLength":"11","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
-"8":{"fieldName":"qq","fieldNameCh":"QQ号码","ShowMaxLength":"9","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
-"9":{"fieldName":"yx","fieldNameCh":"邮箱","ShowMaxLength":"10","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
-"10":{"fieldName":"dz","fieldNameCh":"地址","ShowMaxLength":"10","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
-"11":{"fieldName":"zp","fieldNameCh":"照片","ShowMaxLength":"10","isPK":"0","isShow":"0","isSelect":"0","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":""},
+"0":{"fieldName":"xsid","fieldNameCh":"学生编号","ShowMaxLength":"40","isPK":"1","isShow":"0","isSelect":"0","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
+"1":{"fieldName":"njid","fieldNameCh":"年级","ShowMaxLength":"6","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"1","FKTableName":"GradeInfo","FKTablePK":"njid","FKTableField":"njmc","keyTableID":"0"},
+"2":{"fieldName":"bjid","fieldNameCh":"班级","ShowMaxLength":"6","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"1","FKTableName":"ClassInfo","FKTablePK":"bjid","FKTableField":"bjmc","keyTableID":"0"},
+"3":{"fieldName":"xh","fieldNameCh":"学号","ShowMaxLength":"9","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
+"4":{"fieldName":"mm","fieldNameCh":"密码","ShowMaxLength":"0","isPK":"0","isShow":"0","isSelect":"0","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
+"5":{"fieldName":"sfz","fieldNameCh":"身份证","ShowMaxLength":"18","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
+"6":{"fieldName":"csrq","fieldNameCh":"出身日期","ShowMaxLength":"10","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
+"7":{"fieldName":"dh","fieldNameCh":"电话","ShowMaxLength":"11","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
+"8":{"fieldName":"qq","fieldNameCh":"QQ号码","ShowMaxLength":"9","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
+"9":{"fieldName":"yx","fieldNameCh":"邮箱","ShowMaxLength":"10","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
+"10":{"fieldName":"dz","fieldNameCh":"地址","ShowMaxLength":"10","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
+"11":{"fieldName":"zp","fieldNameCh":"照片","ShowMaxLength":"10","isPK":"0","isShow":"0","isSelect":"0","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"0"},
 "12":{"fieldName":"xb","fieldNameCh":"性别","ShowMaxLength":"2","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"36cfb0d1-449a-444c-bc21-5d9c9dbe56f4"},
 "13":{"fieldName":"xl","fieldNameCh":"学历","ShowMaxLength":"4","isPK":"0","isShow":"1","isSelect":"1","isIntType":"0","isFK":"0","FKTableName":"","FKTablePK":"","FKTableField":"","keyTableID":"2142d3da-be3a-43bf-bdce-3fb6abe5f9ad"}
 }
@@ -217,7 +223,7 @@ function _Fun_AddSqlPageInfo()
                 F_tableFron+=" INNER JOIN "+_GV_FieldConfigJson[i].FKTableName+" ON "+F_tableName+"."+_GV_FieldConfigJson[i].fieldName+" = "+_GV_FieldConfigJson[i].FKTableName+"."+_GV_FieldConfigJson[i].FKTablePK;
             }
             //要下载字典的字段,字典表编号
-            if(_GV_FieldConfigJson[i].keyTableID != "")
+            if(_GV_FieldConfigJson[i].keyTableID != "0")
             {
                 //要下载字典的字段
                 F_keyField+=_GV_FieldConfigJson[i].fieldName+",";
@@ -251,6 +257,14 @@ function _Fun_AddSqlPageInfo()
 //下载总共有多少页
 function _Fun_DownAllPageNum()
 {
+    //查询条件为传过来的条件加上现在的条件
+    if(_GVS_WhereStr=="" && _GVS_OldWhereStr!="")
+    {
+        _GVS_WhereStr=_GVS_OldWhereStr;
+    }else if(_GVS_WhereStr!="" && _GVS_OldWhereStr!="")
+    {
+        _GVS_WhereStr=_GVS_OldWhereStr+" AND "+_GVS_WhereStr;
+    }
     $.post(_GV_PostPage,{_type:"s_DownAllPageNum",tableName:_GVS_TableNameStr,tablePK:_GVS_TablePKStr,tableFrom:_GVS_From_TableAndJonnerStr,tableWhere:_GVS_WhereStr,pageSize:_GVP_ShowPageNum},function(data){
         _GVP_AllPageNum=parseInt(data);
         
@@ -272,6 +286,15 @@ function _Fun_DownAllPageNum()
 //得到页数据
 function _Fun_DownPageJsonInfo()
 {
+    //查询条件为传过来的条件加上现在的条件
+    if(_GVS_WhereStr=="" && _GVS_OldWhereStr!="")
+    {
+        _GVS_WhereStr=_GVS_OldWhereStr;
+    }else if(_GVS_WhereStr!="" && _GVS_OldWhereStr!="")
+    {
+        _GVS_WhereStr=_GVS_OldWhereStr+" AND "+_GVS_WhereStr;
+    }
+    
     //是否分页
     if(_GV_tableConfigJson.isPage=="1")
     {
@@ -643,8 +666,6 @@ function _Fun_Btn_Click_print()
     newWin.print();
     newWin.document.close();
 }
-</script>
-<script language="javascript" type="text/javascript">
 //查看选择结果
 function showCheckBoxSelect()
 {
@@ -686,20 +707,215 @@ function _Fun_AddRow()
     var urlStr="EditPage.aspx?tableID="+_GV_tableID;
     location.href=urlStr;
 }
+//绑定查询表单是否成功
+var _GV_BindSelectFromIsTrue=false;
+//点击查询的时候(加载表单)
+function _Fun_Btn_ShowSelect_click()
+{
+    if(!_GV_BindSelectFromIsTrue)
+    {
+        //绑定表单
+        _Fun_BindSelectHtml();
+        $("#S_select_div").show();
+    }else
+    {
+        $("#S_select_div").show();
+    }
+}
+//绑定查询HTML代码
+/*
+fieldName,fieldNameCh,ShowMaxLength,isPK,isShow,isSelect,isIntType,isFK, FKTableName,FKTablePK,FKTableField,keyTableID,editTypeID
+*/
+/*
+{
+"CustomColumnName":"详细",
+"EditStyle":"EditStyle1.css",
+"ShowStyle":"style1.css",
+"ipxh":2,
+"isAllSelect":"1",
+"isCustomColumn":"1",
+"isDel":"1",
+"isEdit":"1",
+"isPage":"1",
+"isSort":"1",
+"tableName":"UserInfo",
+"tableNameCh":"学生信息表",
+"tableid":"9014b630-de80-42c8-b21b-ee8e8518ef22"
+}
+*/
+/*
+                1:文本框
+                2:日期选择框
+                3:下拉框
+                4:密码框
+                5:文件上传
+                6:多行文本框
+*/
+function _Fun_BindSelectHtml()
+{
+    var _htmlSelect="";
+    var i=0;
+    while(_GV_FieldConfigJson[i]!=null)
+    {
+        //name字符串(看是否是整形,是的话加上^)
+        var temp1="name=\""+_GV_FieldConfigJson[i].fieldName+"\" isint=\""+_GV_FieldConfigJson[i].isIntType+"\"";
+        if(_GV_FieldConfigJson[i].isSelect=="1")
+        {
+            switch(_GV_FieldConfigJson[i].editTypeID)
+            {
+                case "1":
+                    _htmlSelect+="<span>"+_GV_FieldConfigJson[i].fieldNameCh+":<input type=\"text\" "+temp1+" /></span>";
+                    break;
+                case "2":
+                    _htmlSelect+="<span>"+_GV_FieldConfigJson[i].fieldNameCh+":<input type=\"text\" "+temp1+" onfocus=\"WdatePicker({skin:'whyGreen',isShowClear:false,dateFmt:'yyyy-MM-dd'})\" /></span>";
+                    break;
+                case "3":
+                    _htmlSelect+="<span>"+_GV_FieldConfigJson[i].fieldNameCh+":<select "+temp1+">";
+                    //是外键
+                    if(_GV_FieldConfigJson[i].isFK=="1")
+                    {
+                        //外键表名
+                        var B_FKTableName=_GV_FieldConfigJson[i].FKTableName;
+                        //外键表主键
+                        var B_FKTablePK=_GV_FieldConfigJson[i].FKTablePK;
+                        //外键字段
+                        var B_FKTableField=_GV_FieldConfigJson[i].FKTableField;
+                        $.ajax({
+                            url:_GV_PostPage,
+                            type:"POST",
+                            dataType:"json",
+                            async:false,
+                            data:{_type:"e_downFKTableField",table:B_FKTableName,PK:B_FKTablePK,field:B_FKTableField},
+                            success:function(data){
+                                //下拉的HTML
+                                var temp2="<option value=\"\">全部</option>";
+                                var j=0;
+                                while(data[j]!=null)
+                                {
+                                    temp2+="<option value=\""+data[j].FVal+"\">"+data[j].FText+"</option>";
+                                    j++;
+                                }
+                                _htmlSelect+=temp2;
+                            }
+                        });
+                    }else if(_GV_FieldConfigJson[i].keyTableID != "0")
+                    {
+                        /*
+                        {
+                        "0":{"keyName":"男","keyCode":"1"},
+                        "1":{"keyName":"女","keyCode":"0"}
+                        }
+                        */
+                        //字典表ID
+                        var B_keyID=_GV_FieldConfigJson[i].keyTableID;
+                        $.ajax({
+                            url:_GV_PostPage,
+                            type:"POST",
+                            dataType:"json",
+                            async:false,
+                            data:{_type:"s_downKeyTableInfo",KeyTableID:B_keyID},
+                            success:function(data){
+                                //下拉的HTML
+                                var temp2="<option value=\"\">全部</option>";
+                                var j=0;
+                                while(data[j]!=null)
+                                {
+                                    temp2+="<option value=\""+data[j].keyCode+"\">"+data[j].keyName+"</option>";
+                                    j++;
+                                }
+                                _htmlSelect+=temp2;
+                            }
+                        });
+                    }else
+                    {
+                        _htmlSelect+="<option value=\"\">数据错误</option>";
+                    }
+                    _htmlSelect+="</select></span>";
+                    break;
+                default :
+                    _htmlSelect+="<span>"+_GV_FieldConfigJson[i].fieldNameCh+":<input type=\"text\" "+temp1+" /></span>";
+                    break;
+            }
+        }
+        i++;
+    }
+    $("#S_select_from_div").html(_htmlSelect);
+    _GV_BindSelectFromIsTrue=true;
+}
+//查询
+function _Fun_Btn_select_OK_Click()
+{
+    var _selelctWhere="";
+    //遍历文本框
+    $("#S_select_from_div input[type='text'][name]").each(function(){
+        var nameStr=$(this).attr("name");
+        if($(this).val()!="")
+        {
+            var valStr="%"+$(this).val()+"%";
+            if($(this).attr("isint")=="0")
+            {
+                valStr="'"+valStr+"'";
+            }
+            _selelctWhere+="("+nameStr+" like "+valStr+") AND ";
+        }
+    });
+    //遍历下拉框
+    $("#S_select_from_div select[name]").each(function(){
+        var nameStr=$(this).attr("name");
+        var valStr=$(this).val();
+        if(valStr!="")
+        {
+            if($(this).attr("isint")=="0")
+            {
+                valStr="'"+valStr+"'";
+            }
+            _selelctWhere+="("+nameStr+"="+valStr+") AND ";
+        }
+        
+    });
+    _selelctWhere=_selelctWhere.substring(0,_selelctWhere.length-5);
+    _GVS_WhereStr=_selelctWhere;
+    //把页数定向为1
+    _GVP_PageNum=1;
+    //下载页数
+    _Fun_DownAllPageNum();
+    //下载数据
+    _Fun_DownPageJsonInfo();
+}
+//清除查询条件
+function _Fun_Btn_Cls_SelectWhere_click()
+{
+    _GVS_WhereStr="";
+    //把页数定向为1
+    _GVP_PageNum=1;
+    //下载页数
+    _Fun_DownAllPageNum();
+    //下载数据
+    _Fun_DownPageJsonInfo();
+    //隐藏查询区
+    $("#S_select_div").hide();
+}
 </script>
 
 <div>
     <div id="ShowControl_div">
         <%--功能操作区--%>
         <div id="S_click_div">
-            <input type="button" value="查看选择结果" onclick="showCheckBoxSelect()" />
+            <input type="button" value="选择结果" onclick="showCheckBoxSelect()" />
             <input type="button" value="增加记录" onclick="_Fun_AddRow()" />
             <input type="button" value="打印" onclick="_Fun_Btn_Click_print()" />
+            <input type="button" value="查询" onclick="_Fun_Btn_ShowSelect_click()" />
         </div>
         
         <%--查询控件区--%>
-        <div id="S_select_div">
-            
+        <div id="S_select_div" style="display:none">
+            <%--表单显示区--%>
+            <div id="S_select_from_div"></div>
+            <%--按键提交区--%>
+            <div id="S_select_btn_div">
+                <input type="button" value="查询" onclick="_Fun_Btn_select_OK_Click()" />
+                <input type="button" value="清除查询条件" onclick="_Fun_Btn_Cls_SelectWhere_click()" />
+            </div>
         </div>
         
         <%--显示控件区--%>

@@ -182,7 +182,7 @@ function _FunE_BindEditFrom()
                                 _html+=temp3;
                             }
                         });
-                    }else if(_EGV_FieldConfigJson[i].keyTableID != "")
+                    }else if(_EGV_FieldConfigJson[i].keyTableID != "0")
                     {
                         /*
                         {

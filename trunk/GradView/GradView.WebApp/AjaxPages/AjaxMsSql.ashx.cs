@@ -240,7 +240,7 @@ namespace GradView.WebApp.AjaxPages
         }
 
         /// <summary>
-        /// 发送一页的数据到前台
+        /// (显示控件)发送一页的数据到前台
         /// </summary>
         /// <param name="context"></param>
         private void Send_PageInfoJson(HttpContext context)
@@ -257,10 +257,14 @@ namespace GradView.WebApp.AjaxPages
             int IntPageNum = Convert.ToInt32(pageNum);
             int SSize = (IntPageNum - 1) * IntPageSize;
 
-            string sqlStr = "SELECT TOP(" + pageSize + ") " + tablePK + "," + tableFields + " FROM " + tableName + tableFrom + " WHERE (" + tablePK + " NOT IN (SELECT TOP(" + SSize.ToString() + ") " + tablePK + " FROM " + tableName + "))";
+            string sqlStr = "SELECT TOP(" + pageSize + ") " + tablePK + "," + tableFields + " FROM " + tableName + tableFrom + " WHERE (" + tablePK + " NOT IN (SELECT TOP(" + SSize.ToString() + ") " + tablePK + " FROM " + tableName + " WHERE (1=1)";
             if (tableWhere != "")
             {
-                sqlStr += " AND (" + tableWhere + ")";
+                sqlStr += " AND (" + tableWhere + "))) AND (" + tableWhere + ")";
+            }
+            else
+            {
+                sqlStr += "))";
             }
             DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, new SqlParameter[] { });
             string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
@@ -299,13 +303,13 @@ namespace GradView.WebApp.AjaxPages
         }
 
         /// <summary>
-        /// 发送一个表ID的sys_FieldConfig配置信息到前台
+        /// (显示控件)发送一个表ID的sys_FieldConfig配置信息到前台
         /// </summary>
         /// <param name="context"></param>
         private void Send_sysFieldConfig(HttpContext context)
         {
             string tableID = context.Request.Form["tableID"].ToString();
-            string sqlStr = "SELECT fieldName,fieldNameCh,ShowMaxLength,isPK,isShow,isSelect,isIntType,isFK, FKTableName,FKTablePK,FKTableField,keyTableID FROM sys_FieldConfig WHERE (tableid=@tableid) ORDER BY ShowSort";
+            string sqlStr = "SELECT fieldName,fieldNameCh,ShowMaxLength,isPK,isShow,isSelect,isIntType,isFK, FKTableName,FKTablePK,FKTableField,keyTableID,editTypeID FROM sys_FieldConfig WHERE (tableid=@tableid) ORDER BY ShowSort";
             SqlParameter[] sp = { 
                                     new SqlParameter("@tableid", SqlDbType.VarChar, 40)
                                 };
