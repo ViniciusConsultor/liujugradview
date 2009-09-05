@@ -675,8 +675,8 @@ function showCheckBoxSelect()
 function _Fun_T_Table_edit_click(tableName,tablePK,keyVal)
 {
     //alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
-    //var urlStr="EditPage.aspx?tableID="+_GV_tableID+"&EditID="+keyVal;
-    //location.href=urlStr;
+    var urlStr="EditPage.aspx?tableID="+_GV_tableID+"&EditID="+keyVal;
+    location.href=urlStr;
     
 }
 //删除
@@ -873,6 +873,7 @@ function _Fun_BindSelectHtml()
 //查询
 function _Fun_Btn_select_OK_Click()
 {
+    var _sTableName=_GVS_TableNameStr;
     var _selelctWhere="";
     //遍历文本框
     $("#S_select_from_div input[type='text'][name]").each(function(){
@@ -884,7 +885,7 @@ function _Fun_Btn_select_OK_Click()
             {
                 valStr="'"+valStr+"'";
             }
-            _selelctWhere+="("+nameStr+" like "+valStr+") AND ";
+            _selelctWhere+="("+_sTableName+"."+nameStr+" like "+valStr+") AND ";
         }
     });
     //遍历下拉框
@@ -897,12 +898,13 @@ function _Fun_Btn_select_OK_Click()
             {
                 valStr="'"+valStr+"'";
             }
-            _selelctWhere+="("+nameStr+"="+valStr+") AND ";
+            _selelctWhere+="("+_sTableName+"."+nameStr+"="+valStr+") AND ";
         }
         
     });
     _selelctWhere=_selelctWhere.substring(0,_selelctWhere.length-5);
     _GVS_WhereStr=_selelctWhere;
+    alert(_selelctWhere);
     if(_selelctWhere=="")
     {
         alert("没有输入一个查询条件");

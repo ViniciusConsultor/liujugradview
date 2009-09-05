@@ -409,7 +409,10 @@ function _FunE_btn_send_ok()
     //是否新增
     var _isAdd=_EGV_isAdd==true?"1":"0";
     $.post(_EGV_PostPage,{_type:"e_InsAndUpdObj",ClassName:tableName,ClassData:jsonStr,isIns:_isAdd},function(data){
-        alert(data);
+        if(data=="true")
+        {
+            location.href="ShowPage.aspx";
+        }
     });
 }
 </script>
