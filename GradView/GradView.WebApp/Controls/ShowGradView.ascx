@@ -674,6 +674,29 @@ function showCheckBoxSelect()
 //编辑
 function _Fun_T_Table_edit_click(tableName,tablePK,keyVal)
 {
+    var tableInfo=new Object();
+    tableInfo.tableName=tableName;
+    tableInfo.tablePK=tablePK;
+    tableInfo.keyVal=keyVal;
+    
+    var rowInfo=new Object();
+    var i=0;
+    while(_GV_TableInfoJson[i]!=null)
+    {
+        if(_GV_TableInfoJson[i][tablePK]==keyVal)
+        {
+            rowInfo=_GV_TableInfoJson[i];
+            break;
+        }
+        i++;
+    }
+    
+    //如果存在UserFun_Edit.就执行UserFun_Edit
+    if(window.UserFun_Edit)
+    {
+        UserFun_Edit(tableInfo,rowInfo);
+        return;
+    }
     //alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
     var urlStr="EditPage.aspx?tableID="+_GV_tableID+"&EditID="+keyVal;
     location.href=urlStr;
@@ -682,6 +705,31 @@ function _Fun_T_Table_edit_click(tableName,tablePK,keyVal)
 //删除
 function _Fun_T_Table_del_click(tableName,tablePK,keyVal)
 {
+    
+    var tableInfo=new Object();
+    tableInfo.tableName=tableName;
+    tableInfo.tablePK=tablePK;
+    tableInfo.keyVal=keyVal;
+    
+    var rowInfo=new Object();
+    var i=0;
+    while(_GV_TableInfoJson[i]!=null)
+    {
+        if(_GV_TableInfoJson[i][tablePK]==keyVal)
+        {
+            rowInfo=_GV_TableInfoJson[i];
+            break;
+        }
+        i++;
+    }
+    
+    //如果存在UserFun_Del.就执行UserFun_Del
+    if(window.UserFun_Del)
+    {
+        UserFun_Del(tableInfo,rowInfo);
+        return;
+    }
+    
     //alert("表:"+tableName+"\r\n主键:"+tablePK+"\r\n值:"+keyVal);
     var JsonData="{\""+tablePK+"\":\""+keyVal+"\"}";
     if(confirm("您确定删除此数据吗?"))
@@ -722,6 +770,13 @@ function _Fun_T_Table_autoCoulmn_click(tableName,tablePK,keyVal)
 //增加信息
 function _Fun_AddRow()
 {
+    //如果存在UserFun_Add.就执行UserFun_Add
+    if(window.UserFun_Add)
+    {
+        UserFun_Add();
+        return;
+    }
+    
     var urlStr="EditPage.aspx?tableID="+_GV_tableID;
     location.href=urlStr;
 }
