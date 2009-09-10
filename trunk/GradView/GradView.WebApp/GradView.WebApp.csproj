@@ -187,6 +187,7 @@
     <Content Include="JavaScript\My97DatePicker\WdatePicker.js" />
     <Content Include="ShowPage.aspx" />
     <Content Include="Style\EStyle1.css" />
+    <Content Include="Style\Style3.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

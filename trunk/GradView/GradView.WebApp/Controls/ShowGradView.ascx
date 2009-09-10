@@ -2,7 +2,6 @@
 <link id="S_TableStyleFile" href="../Style/Style1.css" rel="stylesheet" type="text/css" />
 <script src="../JavaScript/jquery.js" type="text/javascript"></script>
 <script src="../JavaScript/tablesorter.js" type="text/javascript"></script>
-<script src="../JavaScript/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 //表编号(在sys_tableConfig中表的编号)
 var _GV_tableID="<%= tableID %>";
@@ -528,6 +527,9 @@ function _Fun_BindPageTable()
             $("#T_Table").tablesorter();
         }
     }
+    
+    //偶数行变色
+    $("#T_Table tbody tr:odd").addClass("tableoushu");
 }
 
 //点击全选checkbox
@@ -765,7 +767,12 @@ function _Fun_T_Table_autoCoulmn_click(tableName,tablePK,keyVal)
         }
         i++;
     }
-    UserFun_Custom(tableInfo,rowInfo);
+    //如果存在UserFun_Custom.就执行UserFun_Custom
+    if(window.UserFun_Custom)
+    {
+        UserFun_Custom(tableInfo,rowInfo);
+        return;
+    }
 }
 //增加信息
 function _Fun_AddRow()
@@ -959,7 +966,6 @@ function _Fun_Btn_select_OK_Click()
     });
     _selelctWhere=_selelctWhere.substring(0,_selelctWhere.length-5);
     _GVS_WhereStr=_selelctWhere;
-    alert(_selelctWhere);
     if(_selelctWhere=="")
     {
         alert("没有输入一个查询条件");
@@ -1030,3 +1036,5 @@ function _Fun_Btn_Cls_SelectWhere_click()
         </div>
     </div>
 </div>
+<%--页面加载完成后.加载这个日期控件,可能不要.所以放到最后加载--%>
+<script src="../JavaScript/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
