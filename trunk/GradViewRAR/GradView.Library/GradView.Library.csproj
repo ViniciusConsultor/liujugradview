@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{645375F5-DD70-4FF5-93CD-2C8DB29190AA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GradView.Library</RootNamespace>
+    <AssemblyName>GradView.Library</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.1.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dao\DaoFactory.cs" />
+    <Compile Include="Dao\SqlServer\DaoClassinfo.cs" />
+    <Compile Include="Dao\SqlServer\DaoGradeinfo.cs" />
+    <Compile Include="Dao\SqlServer\DaoKeyEdittype.cs" />
+    <Compile Include="Dao\SqlServer\DaoKeyGrade.cs" />
+    <Compile Include="Dao\SqlServer\DaoKeyRegextype.cs" />
+    <Compile Include="Dao\SqlServer\DaoKeySex.cs" />
+    <Compile Include="Dao\SqlServer\DaoSysFieldconfig.cs" />
+    <Compile Include="Dao\SqlServer\DaoSysKeys.cs" />
+    <Compile Include="Dao\SqlServer\DaoSysTableconfig.cs" />
+    <Compile Include="Dao\SqlServer\DaoUserinfo.cs" />
+    <Compile Include="Logic\BizClassinfo.cs" />
+    <Compile Include="Logic\BizGradeinfo.cs" />
+    <Compile Include="Logic\BizKeyEdittype.cs" />
+    <Compile Include="Logic\BizKeyGrade.cs" />
+    <Compile Include="Logic\BizKeyRegextype.cs" />
+    <Compile Include="Logic\BizKeySex.cs" />
+    <Compile Include="Logic\BizSysFieldconfig.cs" />
+    <Compile Include="Logic\BizSysKeys.cs" />
+    <Compile Include="Logic\BizSysTableconfig.cs" />
+    <Compile Include="Logic\BizUserinfo.cs" />
+    <Compile Include="Model\Classinfo.cs" />
+    <Compile Include="Model\Gradeinfo.cs" />
+    <Compile Include="Model\KeyEdittype.cs" />
+    <Compile Include="Model\KeyGrade.cs" />
+    <Compile Include="Model\KeyRegextype.cs" />
+    <Compile Include="Model\KeySex.cs" />
+    <Compile Include="Model\SysFieldconfig.cs" />
+    <Compile Include="Model\SysKeys.cs" />
+    <Compile Include="Model\SysTableconfig.cs" />
+    <Compile Include="Model\Userinfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\ChineseCalendar.cs" />
+    <Compile Include="Utility\ConfigHelper.cs" />
+    <Compile Include="Utility\ConfigInfo.cs" />
+    <Compile Include="Utility\DateHelper.cs" />
+    <Compile Include="Utility\DESString.cs" />
+    <Compile Include="Utility\FileHelper.cs" />
+    <Compile Include="Utility\IBaseOperate.cs" />
+    <Compile Include="Utility\IDataBase.cs" />
+    <Compile Include="Utility\IDataBaseOperate.cs" />
+    <Compile Include="Utility\IPScaner.cs" />
+    <Compile Include="Utility\IPScanerHelper.cs" />
+    <Compile Include="Utility\JavascriptHelper.cs" />
+    <Compile Include="Utility\Md5Helper.cs" />
+    <Compile Include="Utility\MySQLHelper.cs" />
+    <Compile Include="Utility\OracleHelper.cs" />
+    <Compile Include="Utility\QueryCondition.cs" />
+    <Compile Include="Utility\SQLHelper.cs" />
+    <Compile Include="Utility\StringHelper.cs" />
+    <Compile Include="Utility\WebConfigHelper.cs" />
+    <Compile Include="Utility\XmlHelper.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
