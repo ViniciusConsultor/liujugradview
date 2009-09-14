@@ -31,7 +31,7 @@ namespace GradView.WebApp
                 {
                     SGV.tableID = "9014b630-de80-42c8-b21b-ee8e8518ef22";
                 }
-                SGV.whereStr = "xb='1'";
+                //SGV.whereStr = "xb='1'";
             }
         }
     }
