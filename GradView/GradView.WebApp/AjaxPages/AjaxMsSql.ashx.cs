@@ -304,28 +304,28 @@ namespace GradView.WebApp.AjaxPages
             DataSet ds = SqlHelper.ExecuteDataSet(sqlStr, new SqlParameter[] { });
             string resStr = JsonTableHelper.ToJson(ds.Tables[0]);
 
-            //context.Response.Write(resStr);
+            context.Response.Write(resStr);
 
             //GZIP压缩
-            string acceptEncoding = context.Request.Headers["Accept-Encoding"].ToString().ToUpperInvariant();
-            if (String.IsNullOrEmpty(acceptEncoding))
-            {
-                context.Response.Write(resStr);
-            }
-            else
-            {
-                if (acceptEncoding.Contains("GZIP"))
-                {
-                    context.Response.AppendHeader("Content-encoding", "gzip");
-                    context.Response.Filter = new GZipStream(context.Response.Filter, CompressionMode.Compress);
-                }
-                else if (acceptEncoding.Contains("DEFLATE"))
-                {
-                    context.Response.AppendHeader("Content-encoding", "deflate");
-                    context.Response.Filter = new DeflateStream(context.Response.Filter, CompressionMode.Compress);
-                }
-                context.Response.Write(resStr);
-            }
+            //string acceptEncoding = context.Request.Headers["Accept-Encoding"].ToString().ToUpperInvariant();
+            //if (String.IsNullOrEmpty(acceptEncoding))
+            //{
+            //    context.Response.Write(resStr);
+            //}
+            //else
+            //{
+            //    if (acceptEncoding.Contains("GZIP"))
+            //    {
+            //        context.Response.AppendHeader("Content-encoding", "gzip");
+            //        context.Response.Filter = new GZipStream(context.Response.Filter, CompressionMode.Compress);
+            //    }
+            //    else if (acceptEncoding.Contains("DEFLATE"))
+            //    {
+            //        context.Response.AppendHeader("Content-encoding", "deflate");
+            //        context.Response.Filter = new DeflateStream(context.Response.Filter, CompressionMode.Compress);
+            //    }
+            //    context.Response.Write(resStr);
+            //}
         }
 
         /// <summary>
