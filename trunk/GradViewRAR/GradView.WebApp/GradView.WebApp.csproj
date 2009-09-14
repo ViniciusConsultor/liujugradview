@@ -78,6 +78,13 @@
     </Compile>
     <Compile Include="App_Code\JsonHelper.cs" />
     <Compile Include="App_Code\JsonTableHelper.cs" />
+    <Compile Include="conn.aspx.cs">
+      <DependentUpon>conn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="conn.aspx.designer.cs">
+      <DependentUpon>conn.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\EditGradView.ascx.cs">
       <DependentUpon>EditGradView.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -118,6 +125,7 @@
     <Content Include="AjaxPages\AjaxMsSql.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="conn.aspx" />
     <Content Include="EditPage.aspx" />
     <Content Include="Images\but-bg.gif" />
     <Content Include="Images\icon-01.gif" />
