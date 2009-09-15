@@ -85,10 +85,6 @@ namespace GradView.WebApp.AjaxPages
                 case "2": opMethod = "Delete"; break;
                 default: opMethod = "Insert"; break;
             }
-            if (IntOrUpd != "1")
-            {
-                opMethod = "Update";
-            }
             Type opType = Ab.GetType("GradView.Library.Data." + opName, true, false);
             object opObj = Activator.CreateInstance(opType);
             MethodInfo[] mi = opType.GetMethods();
