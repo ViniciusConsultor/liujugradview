@@ -131,6 +131,7 @@
     <Content Include="Images\icon-01.gif" />
     <Content Include="Images\icon-02.gif" />
     <Content Include="Images\icon-03.gif" />
+    <Content Include="index.html" />
     <Content Include="JavaScript\min\EGV_min.js" />
     <Content Include="JavaScript\min\SGV_min.js" />
     <Content Include="JavaScript\My97DatePicker\calendar.js" />
