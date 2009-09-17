@@ -12,7 +12,7 @@
           <NativeDebugging>False</NativeDebugging>
           <SQLDebugging>False</SQLDebugging>
           <PublishCopyOption>RunFiles</PublishCopyOption>
-          <PublishTargetLocation>D:\GradView\WEB_RAR\</PublishTargetLocation>
+          <PublishTargetLocation>D:\GradView\WEBRAR\</PublishTargetLocation>
           <PublishDeleteAllFiles>False</PublishDeleteAllFiles>
           <PublishCopyAppData>True</PublishCopyAppData>
           <ExternalProgram>
@@ -25,6 +25,7 @@
           </StartWorkingDirectory>
           <EnableENC>False</EnableENC>
           <AlwaysStartWebServerOnDebug>True</AlwaysStartWebServerOnDebug>
+          <EnableWcfTestClientForSVC>False</EnableWcfTestClientForSVC>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
