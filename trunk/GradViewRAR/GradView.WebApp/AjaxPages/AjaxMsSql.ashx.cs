@@ -14,6 +14,7 @@ using GradView.WebApp.App_Code;
 using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Text;
+using System.IO.Compression;
 
 namespace GradView.WebApp.AjaxPages
 {
@@ -30,6 +31,21 @@ namespace GradView.WebApp.AjaxPages
             context.Response.ContentType = "text/plain";
             if (context.Request.Form["_type"] != null)
             {
+                //GZIP压缩
+                string acceptEncoding = context.Request.Headers["Accept-Encoding"].ToString().ToUpperInvariant();
+                if (!String.IsNullOrEmpty(acceptEncoding))
+                {
+                    if (acceptEncoding.Contains("GZIP"))
+                    {
+                        context.Response.AppendHeader("Content-encoding", "gzip");
+                        context.Response.Filter = new GZipStream(context.Response.Filter, CompressionMode.Compress);
+                    }
+                    else if (acceptEncoding.Contains("DEFLATE"))
+                    {
+                        context.Response.AppendHeader("Content-encoding", "deflate");
+                        context.Response.Filter = new DeflateStream(context.Response.Filter, CompressionMode.Compress);
+                    }
+                }
                 switch (context.Request.Form["_type"].ToString())
                 {
                     case "s_downTableConfig": Send_sysTableConfig(context); break;
